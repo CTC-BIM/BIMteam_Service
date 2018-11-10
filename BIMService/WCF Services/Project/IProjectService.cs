@@ -77,12 +77,25 @@ namespace BIMService.Services
     [ServiceContract]
     public interface IProjectService
     {
+        /// <summary>
+        /// Hàm trả về danh sách tất ca dự án
+        /// <returns></returns>
         [OperationContract]
         List<DuAnOutput> DanhSachDuAn();
 
+        /// <summary>
+        /// Hàm trả về thông tin dự án theo tên nhập vào
+        /// </summary>
+        /// <param name="name">Tên dự án</param>
+        /// <returns></returns>
         [OperationContract]
         DuAnOutput TimDuAnTheoTen(string name);
 
+        /// <summary>
+        /// Hàm trả về thông tin dự án theo ID-Mã dự án- nhập vào
+        /// </summary>
+        /// <param name="id">Mã dự án</param>
+        /// <returns></returns>
         [OperationContract]
         DuAnOutput TimDuAnTheoId(string id);
 

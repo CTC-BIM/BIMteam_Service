@@ -66,6 +66,9 @@
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Security" />
@@ -98,9 +101,13 @@
       <DependentUpon>BIMdb.edmx</DependentUpon>
       <LastGenOutput>BIMdb.cs</LastGenOutput>
     </Content>
-    <Content Include="Services\Member\MemberService.svc" />
-    <Content Include="Services\Project\ProjectService.svc" />
+    <Content Include="WCF Services\Member\MemberService.svc" />
+    <Content Include="WCF Services\Project\ProjectService.svc" />
+    <Content Include="WCF Services\Timesheet\TimesheetService.svc" />
     <Content Include="Web.config" />
+    <Content Include="WebServices\MemberService.asmx" />
+    <Content Include="WebServices\ProjectService.asmx" />
+    <Content Include="WebServices\TimesheetService.asmx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\BIMdb.Context.cs">
@@ -208,18 +215,32 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Services\Member\IMemberService.cs" />
-    <Compile Include="Services\Member\MemberService.svc.cs">
+    <Compile Include="WCF Services\Member\IMemberService.cs" />
+    <Compile Include="WCF Services\Member\MemberService.svc.cs">
       <DependentUpon>MemberService.svc</DependentUpon>
     </Compile>
-    <Compile Include="Services\Project\IProjectService.cs" />
-    <Compile Include="Services\Project\ProjectService.svc.cs">
+    <Compile Include="WCF Services\Project\IProjectService.cs" />
+    <Compile Include="WCF Services\Project\ProjectService.svc.cs">
       <DependentUpon>ProjectService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="WCF Services\Timesheet\TimesheetService.svc.cs">
+      <DependentUpon>TimesheetService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="WebServices\MemberService.asmx.cs">
+      <DependentUpon>MemberService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WebServices\ProjectService.asmx.cs">
+      <DependentUpon>ProjectService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WebServices\TimesheetService.asmx.cs">
+      <DependentUpon>TimesheetService.asmx</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Services\Timesheet\" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="Models\BIMdb.edmx">
@@ -230,6 +251,8 @@
       <DependentUpon>BIMdb.edmx</DependentUpon>
     </Content>
     <None Include="packages.config" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

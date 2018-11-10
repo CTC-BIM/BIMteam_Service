@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="BIMService.Services.Timesheet.TimesheetService" CodeBehind="TimesheetService.svc.cs" %>

@@ -21,7 +21,8 @@ namespace BIMService.Services.Member
         public string UserType { get; set; }
         [DataMember]
         public string Department { get; set; }
-
+        [DataMember]
+        public string UserStatus { get; set; }
     }
 
 
