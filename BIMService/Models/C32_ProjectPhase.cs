@@ -12,21 +12,19 @@ namespace BIMService.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class C14_Descipline
+    public partial class C32_ProjectPhase
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public C14_Descipline()
+        public C32_ProjectPhase()
         {
-            this.C04_DMC_PMlist = new HashSet<C04_DMC_PMlist>();
-            this.C02_BIMstaff = new HashSet<C02_BIMstaff>();
+            this.C31_ProjectPhaseDetails = new HashSet<C31_ProjectPhaseDetails>();
         }
     
-        public int CMID { get; set; }
-        public string Descipline { get; set; }
+        public int PhaseID { get; set; }
+        public string PhaseName { get; set; }
+        public string Desription { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<C04_DMC_PMlist> C04_DMC_PMlist { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<C02_BIMstaff> C02_BIMstaff { get; set; }
+        public virtual ICollection<C31_ProjectPhaseDetails> C31_ProjectPhaseDetails { get; set; }
     }
 }

@@ -17,8 +17,12 @@ namespace BIMService.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public C01_DesignProject()
         {
-            this.C24_Issue = new HashSet<C24_Issue>();
             this.C15_TimeSheet = new HashSet<C15_TimeSheet>();
+            this.C05a_TargetDetail = new HashSet<C05a_TargetDetail>();
+            this.C22_CheckList = new HashSet<C22_CheckList>();
+            this.C24_IssueList = new HashSet<C24_IssueList>();
+            this.C30_NTP_ProjectDetails = new HashSet<C30_NTP_ProjectDetails>();
+            this.C31_ProjectPhaseDetails = new HashSet<C31_ProjectPhaseDetails>();
         }
     
         public string ProjectID { get; set; }
@@ -51,9 +55,9 @@ namespace BIMService.Models
         public string Civil_Status { get; set; }
         public string Problems { get; set; }
         public string Solution { get; set; }
+        public string ProjectPhase { get; set; }
+        public string ProjectScope { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<C24_Issue> C24_Issue { get; set; }
         public virtual C04_DMC_PMlist C04_DMC_PMlist { get; set; }
         public virtual C06a_ProjectType C06a_ProjectType { get; set; }
         public virtual C11_OutsourceList C11_OutsourceList { get; set; }
@@ -62,5 +66,15 @@ namespace BIMService.Models
         public virtual C06_ProjectType C06_ProjectType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<C15_TimeSheet> C15_TimeSheet { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<C05a_TargetDetail> C05a_TargetDetail { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<C22_CheckList> C22_CheckList { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<C24_IssueList> C24_IssueList { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<C30_NTP_ProjectDetails> C30_NTP_ProjectDetails { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<C31_ProjectPhaseDetails> C31_ProjectPhaseDetails { get; set; }
     }
 }

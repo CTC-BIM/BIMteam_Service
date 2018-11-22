@@ -14,6 +14,12 @@ namespace BIMService.Models
     
     public partial class C05_BIMtarget
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public C05_BIMtarget()
+        {
+            this.C05a_TargetDetail = new HashSet<C05a_TargetDetail>();
+        }
+    
         public string ID { get; set; }
         public string TargetName { get; set; }
         public string Project_Type { get; set; }
@@ -26,5 +32,8 @@ namespace BIMService.Models
         public Nullable<bool> MEP { get; set; }
         public Nullable<bool> Civil { get; set; }
         public Nullable<bool> Facade { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<C05a_TargetDetail> C05a_TargetDetail { get; set; }
     }
 }

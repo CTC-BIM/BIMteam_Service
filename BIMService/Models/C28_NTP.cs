@@ -14,6 +14,12 @@ namespace BIMService.Models
     
     public partial class C28_NTP
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public C28_NTP()
+        {
+            this.C30_NTP_ProjectDetails = new HashSet<C30_NTP_ProjectDetails>();
+        }
+    
         public int ID { get; set; }
         public string TenNTP { get; set; }
         public string Softname { get; set; }
@@ -29,5 +35,8 @@ namespace BIMService.Models
         public Nullable<bool> DauNoiHaTang { get; set; }
         public Nullable<bool> MoHinh { get; set; }
         public Nullable<bool> Khac { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<C30_NTP_ProjectDetails> C30_NTP_ProjectDetails { get; set; }
     }
 }

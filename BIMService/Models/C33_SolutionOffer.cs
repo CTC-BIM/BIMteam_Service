@@ -12,12 +12,17 @@ namespace BIMService.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class C22_CheckList
+    public partial class C33_SolutionOffer
     {
-        public int ID { get; set; }
+        public string IssueCode { get; set; }
         public string ProjectID { get; set; }
-        public string Detail { get; set; }
+        public string ConstructorName { get; set; }
+        public string SolutionOffer { get; set; }
+        public Nullable<System.DateTime> DateTime { get; set; }
+        public string Status { get; set; }
+        public int ID { get; set; }
+        public int IssueID { get; set; }
     
-        public virtual C01_DesignProject C01_DesignProject { get; set; }
+        public virtual C24_IssueList C24_IssueList { get; set; }
     }
 }

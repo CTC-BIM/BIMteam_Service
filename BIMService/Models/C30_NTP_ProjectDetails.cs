@@ -12,12 +12,14 @@ namespace BIMService.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class C22_CheckList
+    public partial class C30_NTP_ProjectDetails
     {
         public int ID { get; set; }
         public string ProjectID { get; set; }
-        public string Detail { get; set; }
+        public int NTPID { get; set; }
+        public string MemberTakecare { get; set; }
     
         public virtual C01_DesignProject C01_DesignProject { get; set; }
+        public virtual C28_NTP C28_NTP { get; set; }
     }
 }

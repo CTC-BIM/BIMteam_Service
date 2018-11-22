@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="BIMservice.Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="BIMservice.Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="01_DesignProject">
           <Key>
             <PropertyRef Name="ProjectID" />
@@ -15,6 +15,8 @@
           <Property Name="ProjectType" Type="int" />
           <Property Name="ProjectStatus" Type="nvarchar" MaxLength="50" />
           <Property Name="ProjectState" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProjectPhase" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProjectScope" Type="nvarchar" MaxLength="50" />
           <Property Name="ProjectLocation" Type="int" />
           <Property Name="Project Manager" Type="int" />
           <Property Name="BIM staff" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -56,6 +58,7 @@
           <Property Name="Image" Type="varchar" MaxLength="8000" />
           <Property Name="UserType" Type="nvarchar" MaxLength="50" />
           <Property Name="UserStatus" Type="nvarchar" MaxLength="200" />
+          <Property Name="Descipline" Type="int" />
         </EntityType>
         <EntityType Name="04_DMC_PMlist">
           <Key>
@@ -94,6 +97,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ProjectID" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="TargetID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="06_ProjectType">
           <Key>
@@ -210,6 +214,7 @@
         <EntityType Name="18_CourseList">
           <Key>
             <PropertyRef Name="IDKhoahoc" />
+            <PropertyRef Name="MemberID" />
           </Key>
           <Property Name="IDKhoahoc" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MemberID" Type="int" Nullable="false" />
@@ -291,8 +296,11 @@
         <EntityType Name="22_CheckList">
           <Key>
             <PropertyRef Name="ID" />
+            <PropertyRef Name="ProjectID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Detail" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="23_Hinhthucdaotao">
           <Key>
@@ -301,30 +309,37 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="HinhThucDaotao" Type="nvarchar" MaxLength="255" />
         </EntityType>
-        <EntityType Name="24_Issue">
+        <EntityType Name="24_IssueList">
           <Key>
-            <PropertyRef Name="ID" />
             <PropertyRef Name="ProjectID" />
-            <PropertyRef Name="MemberID" />
+            <PropertyRef Name="IssueCode" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ProjectID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="ProjectName" Type="nvarchar" MaxLength="50" />
           <Property Name="MemberID" Type="int" Nullable="false" />
-          <Property Name="IssueCode" Type="nvarchar" MaxLength="4" />
-          <Property Name="Descipline" Type="nvarchar" MaxLength="10" />
+          <Property Name="IssueCode" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="IssueStatus" Type="nvarchar" MaxLength="50" />
           <Property Name="NoOfRepeat" Type="int" />
-          <Property Name="Source" Type="nvarchar(max)" />
+          <Property Name="Sources" Type="nvarchar(max)" />
           <Property Name="Level" Type="nvarchar" MaxLength="50" />
           <Property Name="Tower" Type="nvarchar" MaxLength="50" />
-          <Property Name="Grid" Type="nvarchar" MaxLength="50" />
-          <Property Name="IssueDescription" Type="nvarchar" MaxLength="50" />
-          <Property Name="Solution" Type="nvarchar" MaxLength="50" />
+          <Property Name="Grid" Type="nvarchar(max)" />
+          <Property Name="IssueDescription" Type="nvarchar(max)" />
+          <Property Name="ConstructorSolution" Type="nvarchar(max)" />
           <Property Name="Image1" Type="varchar" MaxLength="8000" />
           <Property Name="Image2" Type="varchar" MaxLength="8000" />
           <Property Name="Image3" Type="varchar" MaxLength="8000" />
           <Property Name="Image4" Type="varchar" MaxLength="8000" />
-          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="Revision" Type="int" />
+          <Property Name="IssueDate" Type="date" />
+          <Property Name="SendTo" Type="nvarchar(max)" />
+          <Property Name="Cc to" Type="nvarchar(max)" />
+          <Property Name="From" Type="nvarchar(max)" />
+          <Property Name="Descipline" Type="nvarchar" MaxLength="50" />
+          <Property Name="Matrix1" Type="nvarchar" MaxLength="50" />
+          <Property Name="Matrix2" Type="nvarchar" MaxLength="50" />
+          <Property Name="Priority" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="25_BIM_RnDproject">
           <Key>
@@ -397,18 +412,51 @@
           <Property Name="TenMucTieu" Type="nvarchar" MaxLength="1000" />
           <Property Name="GhiChu" Type="nvarchar" MaxLength="4000" />
         </EntityType>
-        <Association Name="24_Issue$01_DesignProject24_Issue">
-          <End Role="01_DesignProject" Type="Self.01_DesignProject" Multiplicity="1" />
-          <End Role="24_Issue" Type="Self.24_Issue" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="01_DesignProject">
-              <PropertyRef Name="ProjectID" />
-            </Principal>
-            <Dependent Role="24_Issue">
-              <PropertyRef Name="ProjectID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+        <EntityType Name="30_NTP_ProjectDetails">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ProjectID" />
+            <PropertyRef Name="NTPID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ProjectID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="NTPID" Type="int" Nullable="false" />
+          <Property Name="MemberTakecare" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="31_ProjectPhaseDetails">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ProjectID" />
+            <PropertyRef Name="PhaseID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="PhaseID" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="32_ProjectPhase">
+          <Key>
+            <PropertyRef Name="PhaseID" />
+          </Key>
+          <Property Name="PhaseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PhaseName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Desription" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="33_SolutionOffer">
+          <Key>
+            <PropertyRef Name="IssueCode" />
+            <PropertyRef Name="ProjectID" />
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="IssueCode" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="ProjectID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="ConstructorName" Type="nvarchar" MaxLength="50" />
+          <Property Name="SolutionOffer" Type="nvarchar(max)" />
+          <Property Name="DateTime" Type="datetime" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" />
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="IssueID" Type="int" Nullable="false" />
+        </EntityType>
         <Association Name="FK_01_DesignProject_04_DMC_PMlist">
           <End Role="04_DMC_PMlist" Type="Self.04_DMC_PMlist" Multiplicity="0..1" />
           <End Role="01_DesignProject" Type="Self.01_DesignProject" Multiplicity="*" />
@@ -469,6 +517,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_02_BIMstaff_14_Descipline">
+          <End Role="14_Descipline" Type="Self.14_Descipline" Multiplicity="0..1" />
+          <End Role="02_BIMstaff" Type="Self.02_BIMstaff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="14_Descipline">
+              <PropertyRef Name="CMID" />
+            </Principal>
+            <Dependent Role="02_BIMstaff">
+              <PropertyRef Name="Descipline" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_04_DMC_PMlist_14_Descipline">
           <End Role="14_Descipline" Type="Self.14_Descipline" Multiplicity="0..1" />
           <End Role="04_DMC_PMlist" Type="Self.04_DMC_PMlist" Multiplicity="*" />
@@ -478,6 +538,30 @@
             </Principal>
             <Dependent Role="04_DMC_PMlist">
               <PropertyRef Name="Descipline" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_05a_TargetDetail_01_DesignProject">
+          <End Role="01_DesignProject" Type="Self.01_DesignProject" Multiplicity="1" />
+          <End Role="05a_TargetDetail" Type="Self.05a_TargetDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="01_DesignProject">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="05a_TargetDetail">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_05a_TargetDetail_05_BIMtarget1">
+          <End Role="05_BIMtarget" Type="Self.05_BIMtarget" Multiplicity="1" />
+          <End Role="05a_TargetDetail" Type="Self.05a_TargetDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="05_BIMtarget">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="05a_TargetDetail">
+              <PropertyRef Name="TargetID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -649,15 +733,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_24_Issue_02_BIMstaff">
-          <End Role="02_BIMstaff" Type="Self.02_BIMstaff" Multiplicity="1" />
-          <End Role="24_Issue" Type="Self.24_Issue" Multiplicity="*" />
+        <Association Name="FK_22_CheckList_01_DesignProject">
+          <End Role="01_DesignProject" Type="Self.01_DesignProject" Multiplicity="1" />
+          <End Role="22_CheckList" Type="Self.22_CheckList" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="02_BIMstaff">
-              <PropertyRef Name="BIMstaffID" />
+            <Principal Role="01_DesignProject">
+              <PropertyRef Name="ProjectID" />
             </Principal>
-            <Dependent Role="24_Issue">
-              <PropertyRef Name="MemberID" />
+            <Dependent Role="22_CheckList">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_24_Issue_01_DesignProject">
+          <End Role="01_DesignProject" Type="Self.01_DesignProject" Multiplicity="1" />
+          <End Role="24_IssueList" Type="Self.24_IssueList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="01_DesignProject">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="24_IssueList">
+              <PropertyRef Name="ProjectID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -685,6 +781,68 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_30_NTP_ProjectDetails_01_DesignProject">
+          <End Role="01_DesignProject" Type="Self.01_DesignProject" Multiplicity="1" />
+          <End Role="30_NTP_ProjectDetails" Type="Self.30_NTP_ProjectDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="01_DesignProject">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="30_NTP_ProjectDetails">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_30_NTP_ProjectDetails_28_NTP">
+          <End Role="28_NTP" Type="Self.28_NTP" Multiplicity="1" />
+          <End Role="30_NTP_ProjectDetails" Type="Self.30_NTP_ProjectDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="28_NTP">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="30_NTP_ProjectDetails">
+              <PropertyRef Name="NTPID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_31_ProjectPhaseDetails_01_DesignProject">
+          <End Role="01_DesignProject" Type="Self.01_DesignProject" Multiplicity="1" />
+          <End Role="31_ProjectPhaseDetails" Type="Self.31_ProjectPhaseDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="01_DesignProject">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="31_ProjectPhaseDetails">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_31_ProjectPhaseDetails_32_ProjectPhase">
+          <End Role="32_ProjectPhase" Type="Self.32_ProjectPhase" Multiplicity="1" />
+          <End Role="31_ProjectPhaseDetails" Type="Self.31_ProjectPhaseDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="32_ProjectPhase">
+              <PropertyRef Name="PhaseID" />
+            </Principal>
+            <Dependent Role="31_ProjectPhaseDetails">
+              <PropertyRef Name="PhaseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_33_SolutionOffer_24_Issue">
+          <End Role="24_IssueList" Type="Self.24_IssueList" Multiplicity="1" />
+          <End Role="33_SolutionOffer" Type="Self.33_SolutionOffer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="24_IssueList">
+              <PropertyRef Name="ProjectID" />
+              <PropertyRef Name="IssueCode" />
+            </Principal>
+            <Dependent Role="33_SolutionOffer">
+              <PropertyRef Name="ProjectID" />
+              <PropertyRef Name="IssueCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="BIMserviceModelsStoreContainer">
           <EntitySet Name="01_DesignProject" EntityType="Self.01_DesignProject" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="02_BIMstaff" EntityType="Self.02_BIMstaff" Schema="dbo" store:Type="Tables" />
@@ -709,15 +867,15 @@
           <EntitySet Name="21_SubjectList" EntityType="Self.21_SubjectList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="22_CheckList" EntityType="Self.22_CheckList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="23_Hinhthucdaotao" EntityType="Self.23_Hinhthucdaotao" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="24_Issue" EntityType="Self.24_Issue" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="24_IssueList" EntityType="Self.24_IssueList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="25_BIM_RnDproject" EntityType="Self.25_BIM_RnDproject" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="27_Topic" EntityType="Self.27_Topic" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="28_NTP" EntityType="Self.28_NTP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="29_MucTieuTraining" EntityType="Self.29_MucTieuTraining" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="24_Issue$01_DesignProject24_Issue" Association="Self.24_Issue$01_DesignProject24_Issue">
-            <End Role="01_DesignProject" EntitySet="01_DesignProject" />
-            <End Role="24_Issue" EntitySet="24_Issue" />
-          </AssociationSet>
+          <EntitySet Name="30_NTP_ProjectDetails" EntityType="Self.30_NTP_ProjectDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="31_ProjectPhaseDetails" EntityType="Self.31_ProjectPhaseDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="32_ProjectPhase" EntityType="Self.32_ProjectPhase" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="33_SolutionOffer" EntityType="Self.33_SolutionOffer" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_01_DesignProject_04_DMC_PMlist" Association="Self.FK_01_DesignProject_04_DMC_PMlist">
             <End Role="04_DMC_PMlist" EntitySet="04_DMC_PMlist" />
             <End Role="01_DesignProject" EntitySet="01_DesignProject" />
@@ -738,9 +896,21 @@
             <End Role="13_Location" EntitySet="13_Location" />
             <End Role="01_DesignProject" EntitySet="01_DesignProject" />
           </AssociationSet>
+          <AssociationSet Name="FK_02_BIMstaff_14_Descipline" Association="Self.FK_02_BIMstaff_14_Descipline">
+            <End Role="14_Descipline" EntitySet="14_Descipline" />
+            <End Role="02_BIMstaff" EntitySet="02_BIMstaff" />
+          </AssociationSet>
           <AssociationSet Name="FK_04_DMC_PMlist_14_Descipline" Association="Self.FK_04_DMC_PMlist_14_Descipline">
             <End Role="14_Descipline" EntitySet="14_Descipline" />
             <End Role="04_DMC_PMlist" EntitySet="04_DMC_PMlist" />
+          </AssociationSet>
+          <AssociationSet Name="FK_05a_TargetDetail_01_DesignProject" Association="Self.FK_05a_TargetDetail_01_DesignProject">
+            <End Role="01_DesignProject" EntitySet="01_DesignProject" />
+            <End Role="05a_TargetDetail" EntitySet="05a_TargetDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_05a_TargetDetail_05_BIMtarget1" Association="Self.FK_05a_TargetDetail_05_BIMtarget1">
+            <End Role="05_BIMtarget" EntitySet="05_BIMtarget" />
+            <End Role="05a_TargetDetail" EntitySet="05a_TargetDetail" />
           </AssociationSet>
           <AssociationSet Name="FK_06_ProjectType_01_DesignProject" Association="Self.FK_06_ProjectType_01_DesignProject">
             <End Role="01_DesignProject" EntitySet="01_DesignProject" />
@@ -798,9 +968,13 @@
             <End Role="19_SubContractList" EntitySet="19_SubContractList" />
             <End Role="20_StudentList" EntitySet="20_StudentList" />
           </AssociationSet>
-          <AssociationSet Name="FK_24_Issue_02_BIMstaff" Association="Self.FK_24_Issue_02_BIMstaff">
-            <End Role="02_BIMstaff" EntitySet="02_BIMstaff" />
-            <End Role="24_Issue" EntitySet="24_Issue" />
+          <AssociationSet Name="FK_22_CheckList_01_DesignProject" Association="Self.FK_22_CheckList_01_DesignProject">
+            <End Role="01_DesignProject" EntitySet="01_DesignProject" />
+            <End Role="22_CheckList" EntitySet="22_CheckList" />
+          </AssociationSet>
+          <AssociationSet Name="FK_24_Issue_01_DesignProject" Association="Self.FK_24_Issue_01_DesignProject">
+            <End Role="01_DesignProject" EntitySet="01_DesignProject" />
+            <End Role="24_IssueList" EntitySet="24_IssueList" />
           </AssociationSet>
           <AssociationSet Name="FK_25_BIM_RnDproject_02_BIMstaff" Association="Self.FK_25_BIM_RnDproject_02_BIMstaff">
             <End Role="02_BIMstaff" EntitySet="02_BIMstaff" />
@@ -810,9 +984,28 @@
             <End Role="02_BIMstaff" EntitySet="02_BIMstaff" />
             <End Role="27_Topic" EntitySet="27_Topic" />
           </AssociationSet>
+          <AssociationSet Name="FK_30_NTP_ProjectDetails_01_DesignProject" Association="Self.FK_30_NTP_ProjectDetails_01_DesignProject">
+            <End Role="01_DesignProject" EntitySet="01_DesignProject" />
+            <End Role="30_NTP_ProjectDetails" EntitySet="30_NTP_ProjectDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_30_NTP_ProjectDetails_28_NTP" Association="Self.FK_30_NTP_ProjectDetails_28_NTP">
+            <End Role="28_NTP" EntitySet="28_NTP" />
+            <End Role="30_NTP_ProjectDetails" EntitySet="30_NTP_ProjectDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_31_ProjectPhaseDetails_01_DesignProject" Association="Self.FK_31_ProjectPhaseDetails_01_DesignProject">
+            <End Role="01_DesignProject" EntitySet="01_DesignProject" />
+            <End Role="31_ProjectPhaseDetails" EntitySet="31_ProjectPhaseDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_31_ProjectPhaseDetails_32_ProjectPhase" Association="Self.FK_31_ProjectPhaseDetails_32_ProjectPhase">
+            <End Role="32_ProjectPhase" EntitySet="32_ProjectPhase" />
+            <End Role="31_ProjectPhaseDetails" EntitySet="31_ProjectPhaseDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_33_SolutionOffer_24_Issue" Association="Self.FK_33_SolutionOffer_24_Issue">
+            <End Role="24_IssueList" EntitySet="24_IssueList" />
+            <End Role="33_SolutionOffer" EntitySet="33_SolutionOffer" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BIMservice.Models" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -850,7 +1043,6 @@
           <Property Name="Civil_Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="Problems" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Solution" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="C24_Issue" Relationship="Self.C24_Issue_01_DesignProject24_Issue" FromRole="C01_DesignProject" ToRole="C24_Issue" />
           <NavigationProperty Name="C04_DMC_PMlist" Relationship="Self.FK_01_DesignProject_04_DMC_PMlist" FromRole="C01_DesignProject" ToRole="C04_DMC_PMlist" />
           <NavigationProperty Name="C06a_ProjectType" Relationship="Self.FK_01_DesignProject_06a_ProjectType" FromRole="C01_DesignProject" ToRole="C06a_ProjectType" />
           <NavigationProperty Name="C11_OutsourceList" Relationship="Self.FK_01_DesignProject_11_OutsourceList" FromRole="C01_DesignProject" ToRole="C11_OutsourceList" />
@@ -858,6 +1050,13 @@
           <NavigationProperty Name="C13_Location" Relationship="Self.FK_01_DesignProject_13_Location" FromRole="C01_DesignProject" ToRole="C13_Location" />
           <NavigationProperty Name="C06_ProjectType" Relationship="Self.FK_06_ProjectType_01_DesignProject" FromRole="C01_DesignProject" ToRole="C06_ProjectType" />
           <NavigationProperty Name="C15_TimeSheet" Relationship="Self.FK_15_TimeSheet_01_DesignProject" FromRole="C01_DesignProject" ToRole="C15_TimeSheet" />
+          <Property Name="ProjectPhase" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProjectScope" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="C05a_TargetDetail" Relationship="BIMservice.Models.FK_05a_TargetDetail_01_DesignProject" FromRole="C01_DesignProject" ToRole="C05a_TargetDetail" />
+          <NavigationProperty Name="C22_CheckList" Relationship="BIMservice.Models.FK_22_CheckList_01_DesignProject" FromRole="C01_DesignProject" ToRole="C22_CheckList" />
+          <NavigationProperty Name="C24_IssueList" Relationship="BIMservice.Models.FK_24_Issue_01_DesignProject" FromRole="C01_DesignProject" ToRole="C24_IssueList" />
+          <NavigationProperty Name="C30_NTP_ProjectDetails" Relationship="BIMservice.Models.FK_30_NTP_ProjectDetails_01_DesignProject" FromRole="C01_DesignProject" ToRole="C30_NTP_ProjectDetails" />
+          <NavigationProperty Name="C31_ProjectPhaseDetails" Relationship="BIMservice.Models.FK_31_ProjectPhaseDetails_01_DesignProject" FromRole="C01_DesignProject" ToRole="C31_ProjectPhaseDetails" />
         </EntityType>
         <EntityType Name="C02_BIMstaff">
           <Key>
@@ -877,9 +1076,10 @@
           <Property Name="UserStatus" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="C15_TimeSheet" Relationship="Self.FK_15_TimeSheet_02_BIMstaff" FromRole="C02_BIMstaff" ToRole="C15_TimeSheet" />
           <NavigationProperty Name="C18_CourseList" Relationship="Self.FK_18_CourseList_02_BIMstaff" FromRole="C02_BIMstaff" ToRole="C18_CourseList" />
-          <NavigationProperty Name="C24_Issue" Relationship="Self.FK_24_Issue_02_BIMstaff" FromRole="C02_BIMstaff" ToRole="C24_Issue" />
           <NavigationProperty Name="C25_BIM_RnDproject" Relationship="Self.FK_25_BIM_RnDproject_02_BIMstaff" FromRole="C02_BIMstaff" ToRole="C25_BIM_RnDproject" />
           <NavigationProperty Name="C27_Topic" Relationship="Self.FK_27_Topic_02_BIMstaff" FromRole="C02_BIMstaff" ToRole="C27_Topic" />
+          <Property Name="Descipline" Type="Int32" />
+          <NavigationProperty Name="C14_Descipline" Relationship="BIMservice.Models.FK_02_BIMstaff_14_Descipline" FromRole="C02_BIMstaff" ToRole="C14_Descipline" />
         </EntityType>
         <EntityType Name="C04_DMC_PMlist">
           <Key>
@@ -898,7 +1098,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
           <Property Name="TargetName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Project_Type" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="Descipline_Group" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -910,6 +1110,7 @@
           <Property Name="MEP" Type="Boolean" />
           <Property Name="Civil" Type="Boolean" />
           <Property Name="Facade" Type="Boolean" />
+          <NavigationProperty Name="C05a_TargetDetail" Relationship="BIMservice.Models.FK_05a_TargetDetail_05_BIMtarget1" FromRole="C05_BIMtarget" ToRole="C05a_TargetDetail" />
         </EntityType>
         <EntityType Name="C05a_TargetDetail">
           <Key>
@@ -920,6 +1121,9 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProjectID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="TargetID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="C01_DesignProject" Relationship="BIMservice.Models.FK_05a_TargetDetail_01_DesignProject" FromRole="C05a_TargetDetail" ToRole="C01_DesignProject" />
+          <NavigationProperty Name="C05_BIMtarget" Relationship="BIMservice.Models.FK_05a_TargetDetail_05_BIMtarget1" FromRole="C05a_TargetDetail" ToRole="C05_BIMtarget" />
         </EntityType>
         <EntityType Name="C06_ProjectType">
           <Key>
@@ -996,6 +1200,7 @@
           <Property Name="CMID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Descipline" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="C04_DMC_PMlist" Relationship="Self.FK_04_DMC_PMlist_14_Descipline" FromRole="C14_Descipline" ToRole="C04_DMC_PMlist" />
+          <NavigationProperty Name="C02_BIMstaff" Relationship="BIMservice.Models.FK_02_BIMstaff_14_Descipline" FromRole="C14_Descipline" ToRole="C02_BIMstaff" />
         </EntityType>
         <EntityType Name="C15_TimeSheet">
           <Key>
@@ -1144,8 +1349,12 @@
         <EntityType Name="C22_CheckList">
           <Key>
             <PropertyRef Name="ID" />
+            <PropertyRef Name="ProjectID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Detail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="C01_DesignProject" Relationship="BIMservice.Models.FK_22_CheckList_01_DesignProject" FromRole="C22_CheckList" ToRole="C01_DesignProject" />
         </EntityType>
         <EntityType Name="C23_Hinhthucdaotao">
           <Key>
@@ -1154,33 +1363,6 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="HinhThucDaotao" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="C18_CourseList_Detail" Relationship="Self.FK_18_CourseList_Detail_23_Hinhthucdaotao" FromRole="C23_Hinhthucdaotao" ToRole="C18_CourseList_Detail" />
-        </EntityType>
-        <EntityType Name="C24_Issue">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="ProjectID" />
-            <PropertyRef Name="MemberID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProjectID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="MemberID" Type="Int32" Nullable="false" />
-          <Property Name="IssueCode" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="Descipline" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="IssueStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="NoOfRepeat" Type="Int32" />
-          <Property Name="Source" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Level" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Tower" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Grid" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IssueDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Solution" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Image1" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
-          <Property Name="Image2" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
-          <Property Name="Image3" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
-          <Property Name="Image4" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
-          <Property Name="SSMA_TimeStamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="C01_DesignProject" Relationship="Self.C24_Issue_01_DesignProject24_Issue" FromRole="C24_Issue" ToRole="C01_DesignProject" />
-          <NavigationProperty Name="C02_BIMstaff" Relationship="Self.FK_24_Issue_02_BIMstaff" FromRole="C24_Issue" ToRole="C02_BIMstaff" />
         </EntityType>
         <EntityType Name="C25_BIM_RnDproject">
           <Key>
@@ -1246,6 +1428,7 @@
           <Property Name="DauNoiHaTang" Type="Boolean" />
           <Property Name="MoHinh" Type="Boolean" />
           <Property Name="Khac" Type="Boolean" />
+          <NavigationProperty Name="C30_NTP_ProjectDetails" Relationship="BIMservice.Models.FK_30_NTP_ProjectDetails_28_NTP" FromRole="C28_NTP" ToRole="C30_NTP_ProjectDetails" />
         </EntityType>
         <EntityType Name="C29_MucTieuTraining">
           <Key>
@@ -1256,18 +1439,6 @@
           <Property Name="GhiChu" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="C18_CourseList_Detail" Relationship="Self.FK_18_CourseList_Detail_29_MucTieuTraining" FromRole="C29_MucTieuTraining" ToRole="C18_CourseList_Detail" />
         </EntityType>
-        <Association Name="C24_Issue_01_DesignProject24_Issue">
-          <End Role="C01_DesignProject" Type="Self.C01_DesignProject" Multiplicity="1" />
-          <End Role="C24_Issue" Type="Self.C24_Issue" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="C01_DesignProject">
-              <PropertyRef Name="ProjectID" />
-            </Principal>
-            <Dependent Role="C24_Issue">
-              <PropertyRef Name="ProjectID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_01_DesignProject_04_DMC_PMlist">
           <End Role="C04_DMC_PMlist" Type="Self.C04_DMC_PMlist" Multiplicity="0..1" />
           <End Role="C01_DesignProject" Type="Self.C01_DesignProject" Multiplicity="*" />
@@ -1372,18 +1543,6 @@
               <PropertyRef Name="BIMstaffID" />
             </Principal>
             <Dependent Role="C18_CourseList">
-              <PropertyRef Name="MemberID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_24_Issue_02_BIMstaff">
-          <End Role="C02_BIMstaff" Type="Self.C02_BIMstaff" Multiplicity="1" />
-          <End Role="C24_Issue" Type="Self.C24_Issue" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="C02_BIMstaff">
-              <PropertyRef Name="BIMstaffID" />
-            </Principal>
-            <Dependent Role="C24_Issue">
               <PropertyRef Name="MemberID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1568,15 +1727,10 @@
           <EntitySet Name="C21_SubjectList" EntityType="Self.C21_SubjectList" />
           <EntitySet Name="C22_CheckList" EntityType="Self.C22_CheckList" />
           <EntitySet Name="C23_Hinhthucdaotao" EntityType="Self.C23_Hinhthucdaotao" />
-          <EntitySet Name="C24_Issue" EntityType="Self.C24_Issue" />
           <EntitySet Name="C25_BIM_RnDproject" EntityType="Self.C25_BIM_RnDproject" />
           <EntitySet Name="C27_Topic" EntityType="Self.C27_Topic" />
           <EntitySet Name="C28_NTP" EntityType="Self.C28_NTP" />
           <EntitySet Name="C29_MucTieuTraining" EntityType="Self.C29_MucTieuTraining" />
-          <AssociationSet Name="C24_Issue_01_DesignProject24_Issue" Association="Self.C24_Issue_01_DesignProject24_Issue">
-            <End Role="C01_DesignProject" EntitySet="C01_DesignProject" />
-            <End Role="C24_Issue" EntitySet="C24_Issue" />
-          </AssociationSet>
           <AssociationSet Name="FK_01_DesignProject_04_DMC_PMlist" Association="Self.FK_01_DesignProject_04_DMC_PMlist">
             <End Role="C04_DMC_PMlist" EntitySet="C04_DMC_PMlist" />
             <End Role="C01_DesignProject" EntitySet="C01_DesignProject" />
@@ -1612,10 +1766,6 @@
           <AssociationSet Name="FK_18_CourseList_02_BIMstaff" Association="Self.FK_18_CourseList_02_BIMstaff">
             <End Role="C02_BIMstaff" EntitySet="C02_BIMstaff" />
             <End Role="C18_CourseList" EntitySet="C18_CourseList" />
-          </AssociationSet>
-          <AssociationSet Name="FK_24_Issue_02_BIMstaff" Association="Self.FK_24_Issue_02_BIMstaff">
-            <End Role="C02_BIMstaff" EntitySet="C02_BIMstaff" />
-            <End Role="C24_Issue" EntitySet="C24_Issue" />
           </AssociationSet>
           <AssociationSet Name="FK_25_BIM_RnDproject_02_BIMstaff" Association="Self.FK_25_BIM_RnDproject_02_BIMstaff">
             <End Role="C02_BIMstaff" EntitySet="C02_BIMstaff" />
@@ -1669,7 +1819,259 @@
             <End Role="C19_SubContractList" EntitySet="C19_SubContractList" />
             <End Role="C20_StudentList" EntitySet="C20_StudentList" />
           </AssociationSet>
+          <EntitySet Name="C24_IssueList" EntityType="BIMservice.Models.C24_IssueList" />
+          <EntitySet Name="C30_NTP_ProjectDetails" EntityType="BIMservice.Models.C30_NTP_ProjectDetails" />
+          <EntitySet Name="C31_ProjectPhaseDetails" EntityType="BIMservice.Models.C31_ProjectPhaseDetails" />
+          <EntitySet Name="C32_ProjectPhase" EntityType="BIMservice.Models.C32_ProjectPhase" />
+          <EntitySet Name="C33_SolutionOffer" EntityType="BIMservice.Models.C33_SolutionOffer" />
+          <AssociationSet Name="FK_05a_TargetDetail_01_DesignProject" Association="BIMservice.Models.FK_05a_TargetDetail_01_DesignProject">
+            <End Role="C01_DesignProject" EntitySet="C01_DesignProject" />
+            <End Role="C05a_TargetDetail" EntitySet="C05a_TargetDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_22_CheckList_01_DesignProject" Association="BIMservice.Models.FK_22_CheckList_01_DesignProject">
+            <End Role="C01_DesignProject" EntitySet="C01_DesignProject" />
+            <End Role="C22_CheckList" EntitySet="C22_CheckList" />
+          </AssociationSet>
+          <AssociationSet Name="FK_24_Issue_01_DesignProject" Association="BIMservice.Models.FK_24_Issue_01_DesignProject">
+            <End Role="C01_DesignProject" EntitySet="C01_DesignProject" />
+            <End Role="C24_IssueList" EntitySet="C24_IssueList" />
+          </AssociationSet>
+          <AssociationSet Name="FK_30_NTP_ProjectDetails_01_DesignProject" Association="BIMservice.Models.FK_30_NTP_ProjectDetails_01_DesignProject">
+            <End Role="C01_DesignProject" EntitySet="C01_DesignProject" />
+            <End Role="C30_NTP_ProjectDetails" EntitySet="C30_NTP_ProjectDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_31_ProjectPhaseDetails_01_DesignProject" Association="BIMservice.Models.FK_31_ProjectPhaseDetails_01_DesignProject">
+            <End Role="C01_DesignProject" EntitySet="C01_DesignProject" />
+            <End Role="C31_ProjectPhaseDetails" EntitySet="C31_ProjectPhaseDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_02_BIMstaff_14_Descipline" Association="BIMservice.Models.FK_02_BIMstaff_14_Descipline">
+            <End Role="C14_Descipline" EntitySet="C14_Descipline" />
+            <End Role="C02_BIMstaff" EntitySet="C02_BIMstaff" />
+          </AssociationSet>
+          <AssociationSet Name="FK_05a_TargetDetail_05_BIMtarget1" Association="BIMservice.Models.FK_05a_TargetDetail_05_BIMtarget1">
+            <End Role="C05_BIMtarget" EntitySet="C05_BIMtarget" />
+            <End Role="C05a_TargetDetail" EntitySet="C05a_TargetDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_33_SolutionOffer_24_Issue" Association="BIMservice.Models.FK_33_SolutionOffer_24_Issue">
+            <End Role="C24_IssueList" EntitySet="C24_IssueList" />
+            <End Role="C33_SolutionOffer" EntitySet="C33_SolutionOffer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_30_NTP_ProjectDetails_28_NTP" Association="BIMservice.Models.FK_30_NTP_ProjectDetails_28_NTP">
+            <End Role="C28_NTP" EntitySet="C28_NTP" />
+            <End Role="C30_NTP_ProjectDetails" EntitySet="C30_NTP_ProjectDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_31_ProjectPhaseDetails_32_ProjectPhase" Association="BIMservice.Models.FK_31_ProjectPhaseDetails_32_ProjectPhase">
+            <End Role="C32_ProjectPhase" EntitySet="C32_ProjectPhase" />
+            <End Role="C31_ProjectPhaseDetails" EntitySet="C31_ProjectPhaseDetails" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="C24_IssueList">
+          <Key>
+            <PropertyRef Name="ProjectID" />
+            <PropertyRef Name="IssueCode" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ProjectName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MemberID" Type="Int32" Nullable="false" />
+          <Property Name="IssueCode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IssueStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NoOfRepeat" Type="Int32" />
+          <Property Name="Sources" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Level" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Tower" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Grid" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IssueDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ConstructorSolution" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Image1" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+          <Property Name="Image2" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+          <Property Name="Image3" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+          <Property Name="Image4" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+          <Property Name="Revision" Type="Int32" />
+          <Property Name="IssueDate" Type="DateTime" Precision="0" />
+          <Property Name="SendTo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Cc_to" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="From" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Descipline" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Matrix1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Matrix2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Priority" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="C01_DesignProject" Relationship="BIMservice.Models.FK_24_Issue_01_DesignProject" FromRole="C24_IssueList" ToRole="C01_DesignProject" />
+          <NavigationProperty Name="C33_SolutionOffer" Relationship="BIMservice.Models.FK_33_SolutionOffer_24_Issue" FromRole="C24_IssueList" ToRole="C33_SolutionOffer" />
+        </EntityType>
+        <EntityType Name="C30_NTP_ProjectDetails">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ProjectID" />
+            <PropertyRef Name="NTPID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ProjectID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="NTPID" Type="Int32" Nullable="false" />
+          <Property Name="MemberTakecare" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="C01_DesignProject" Relationship="BIMservice.Models.FK_30_NTP_ProjectDetails_01_DesignProject" FromRole="C30_NTP_ProjectDetails" ToRole="C01_DesignProject" />
+          <NavigationProperty Name="C28_NTP" Relationship="BIMservice.Models.FK_30_NTP_ProjectDetails_28_NTP" FromRole="C30_NTP_ProjectDetails" ToRole="C28_NTP" />
+        </EntityType>
+        <EntityType Name="C31_ProjectPhaseDetails">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ProjectID" />
+            <PropertyRef Name="PhaseID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PhaseID" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="C01_DesignProject" Relationship="BIMservice.Models.FK_31_ProjectPhaseDetails_01_DesignProject" FromRole="C31_ProjectPhaseDetails" ToRole="C01_DesignProject" />
+          <NavigationProperty Name="C32_ProjectPhase" Relationship="BIMservice.Models.FK_31_ProjectPhaseDetails_32_ProjectPhase" FromRole="C31_ProjectPhaseDetails" ToRole="C32_ProjectPhase" />
+        </EntityType>
+        <EntityType Name="C32_ProjectPhase">
+          <Key>
+            <PropertyRef Name="PhaseID" />
+          </Key>
+          <Property Name="PhaseID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PhaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Desription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="C31_ProjectPhaseDetails" Relationship="BIMservice.Models.FK_31_ProjectPhaseDetails_32_ProjectPhase" FromRole="C32_ProjectPhase" ToRole="C31_ProjectPhaseDetails" />
+        </EntityType>
+        <EntityType Name="C33_SolutionOffer">
+          <Key>
+            <PropertyRef Name="IssueCode" />
+            <PropertyRef Name="ProjectID" />
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="IssueCode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ProjectID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ConstructorName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SolutionOffer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateTime" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="IssueID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="C24_IssueList" Relationship="BIMservice.Models.FK_33_SolutionOffer_24_Issue" FromRole="C33_SolutionOffer" ToRole="C24_IssueList" />
+        </EntityType>
+        <Association Name="FK_05a_TargetDetail_01_DesignProject">
+          <End Type="BIMservice.Models.C01_DesignProject" Role="C01_DesignProject" Multiplicity="1" />
+          <End Type="BIMservice.Models.C05a_TargetDetail" Role="C05a_TargetDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="C01_DesignProject">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="C05a_TargetDetail">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_22_CheckList_01_DesignProject">
+          <End Type="BIMservice.Models.C01_DesignProject" Role="C01_DesignProject" Multiplicity="1" />
+          <End Type="BIMservice.Models.C22_CheckList" Role="C22_CheckList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="C01_DesignProject">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="C22_CheckList">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_24_Issue_01_DesignProject">
+          <End Type="BIMservice.Models.C01_DesignProject" Role="C01_DesignProject" Multiplicity="1" />
+          <End Type="BIMservice.Models.C24_IssueList" Role="C24_IssueList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="C01_DesignProject">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="C24_IssueList">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_30_NTP_ProjectDetails_01_DesignProject">
+          <End Type="BIMservice.Models.C01_DesignProject" Role="C01_DesignProject" Multiplicity="1" />
+          <End Type="BIMservice.Models.C30_NTP_ProjectDetails" Role="C30_NTP_ProjectDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="C01_DesignProject">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="C30_NTP_ProjectDetails">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_31_ProjectPhaseDetails_01_DesignProject">
+          <End Type="BIMservice.Models.C01_DesignProject" Role="C01_DesignProject" Multiplicity="1" />
+          <End Type="BIMservice.Models.C31_ProjectPhaseDetails" Role="C31_ProjectPhaseDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="C01_DesignProject">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="C31_ProjectPhaseDetails">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_02_BIMstaff_14_Descipline">
+          <End Type="BIMservice.Models.C14_Descipline" Role="C14_Descipline" Multiplicity="0..1" />
+          <End Type="BIMservice.Models.C02_BIMstaff" Role="C02_BIMstaff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="C14_Descipline">
+              <PropertyRef Name="CMID" />
+            </Principal>
+            <Dependent Role="C02_BIMstaff">
+              <PropertyRef Name="Descipline" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_05a_TargetDetail_05_BIMtarget1">
+          <End Type="BIMservice.Models.C05_BIMtarget" Role="C05_BIMtarget" Multiplicity="1" />
+          <End Type="BIMservice.Models.C05a_TargetDetail" Role="C05a_TargetDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="C05_BIMtarget">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="C05a_TargetDetail">
+              <PropertyRef Name="TargetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_33_SolutionOffer_24_Issue">
+          <End Type="BIMservice.Models.C24_IssueList" Role="C24_IssueList" Multiplicity="1" />
+          <End Type="BIMservice.Models.C33_SolutionOffer" Role="C33_SolutionOffer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="C24_IssueList">
+              <PropertyRef Name="ProjectID" />
+              <PropertyRef Name="IssueCode" />
+            </Principal>
+            <Dependent Role="C33_SolutionOffer">
+              <PropertyRef Name="ProjectID" />
+              <PropertyRef Name="IssueCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_30_NTP_ProjectDetails_28_NTP">
+          <End Type="BIMservice.Models.C28_NTP" Role="C28_NTP" Multiplicity="1" />
+          <End Type="BIMservice.Models.C30_NTP_ProjectDetails" Role="C30_NTP_ProjectDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="C28_NTP">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="C30_NTP_ProjectDetails">
+              <PropertyRef Name="NTPID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_31_ProjectPhaseDetails_32_ProjectPhase">
+          <End Type="BIMservice.Models.C32_ProjectPhase" Role="C32_ProjectPhase" Multiplicity="1" />
+          <End Type="BIMservice.Models.C31_ProjectPhaseDetails" Role="C31_ProjectPhaseDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="C32_ProjectPhase">
+              <PropertyRef Name="PhaseID" />
+            </Principal>
+            <Dependent Role="C31_ProjectPhaseDetails">
+              <PropertyRef Name="PhaseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1679,6 +2081,8 @@
           <EntitySetMapping Name="C01_DesignProject">
             <EntityTypeMapping TypeName="BIMservice.Models.C01_DesignProject">
               <MappingFragment StoreEntitySet="01_DesignProject">
+                <ScalarProperty Name="ProjectScope" ColumnName="ProjectScope" />
+                <ScalarProperty Name="ProjectPhase" ColumnName="ProjectPhase" />
                 <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
                 <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
                 <ScalarProperty Name="ProjectOtherName" ColumnName="ProjectOtherName" />
@@ -1715,6 +2119,7 @@
           <EntitySetMapping Name="C02_BIMstaff">
             <EntityTypeMapping TypeName="BIMservice.Models.C02_BIMstaff">
               <MappingFragment StoreEntitySet="02_BIMstaff">
+                <ScalarProperty Name="Descipline" ColumnName="Descipline" />
                 <ScalarProperty Name="BIMstaffID" ColumnName="BIMstaffID" />
                 <ScalarProperty Name="Staff_name" ColumnName="Staff name" />
                 <ScalarProperty Name="Sortname" ColumnName="Sortname" />
@@ -1763,6 +2168,7 @@
           <EntitySetMapping Name="C05a_TargetDetail">
             <EntityTypeMapping TypeName="BIMservice.Models.C05a_TargetDetail">
               <MappingFragment StoreEntitySet="05a_TargetDetail">
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
                 <ScalarProperty Name="TargetID" ColumnName="TargetID" />
@@ -1979,6 +2385,8 @@
           <EntitySetMapping Name="C22_CheckList">
             <EntityTypeMapping TypeName="BIMservice.Models.C22_CheckList">
               <MappingFragment StoreEntitySet="22_CheckList">
+                <ScalarProperty Name="Detail" ColumnName="Detail" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1988,30 +2396,6 @@
               <MappingFragment StoreEntitySet="23_Hinhthucdaotao">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="HinhThucDaotao" ColumnName="HinhThucDaotao" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="C24_Issue">
-            <EntityTypeMapping TypeName="BIMservice.Models.C24_Issue">
-              <MappingFragment StoreEntitySet="24_Issue">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
-                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
-                <ScalarProperty Name="IssueCode" ColumnName="IssueCode" />
-                <ScalarProperty Name="Descipline" ColumnName="Descipline" />
-                <ScalarProperty Name="IssueStatus" ColumnName="IssueStatus" />
-                <ScalarProperty Name="NoOfRepeat" ColumnName="NoOfRepeat" />
-                <ScalarProperty Name="Source" ColumnName="Source" />
-                <ScalarProperty Name="Level" ColumnName="Level" />
-                <ScalarProperty Name="Tower" ColumnName="Tower" />
-                <ScalarProperty Name="Grid" ColumnName="Grid" />
-                <ScalarProperty Name="IssueDescription" ColumnName="IssueDescription" />
-                <ScalarProperty Name="Solution" ColumnName="Solution" />
-                <ScalarProperty Name="Image1" ColumnName="Image1" />
-                <ScalarProperty Name="Image2" ColumnName="Image2" />
-                <ScalarProperty Name="Image3" ColumnName="Image3" />
-                <ScalarProperty Name="Image4" ColumnName="Image4" />
-                <ScalarProperty Name="SSMA_TimeStamp" ColumnName="SSMA_TimeStamp" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2085,6 +2469,81 @@
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="TenMucTieu" ColumnName="TenMucTieu" />
                 <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="C24_IssueList">
+            <EntityTypeMapping TypeName="BIMservice.Models.C24_IssueList">
+              <MappingFragment StoreEntitySet="24_IssueList">
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="Matrix2" ColumnName="Matrix2" />
+                <ScalarProperty Name="Matrix1" ColumnName="Matrix1" />
+                <ScalarProperty Name="Descipline" ColumnName="Descipline" />
+                <ScalarProperty Name="From" ColumnName="From" />
+                <ScalarProperty Name="Cc_to" ColumnName="Cc to" />
+                <ScalarProperty Name="SendTo" ColumnName="SendTo" />
+                <ScalarProperty Name="IssueDate" ColumnName="IssueDate" />
+                <ScalarProperty Name="Revision" ColumnName="Revision" />
+                <ScalarProperty Name="Image4" ColumnName="Image4" />
+                <ScalarProperty Name="Image3" ColumnName="Image3" />
+                <ScalarProperty Name="Image2" ColumnName="Image2" />
+                <ScalarProperty Name="Image1" ColumnName="Image1" />
+                <ScalarProperty Name="ConstructorSolution" ColumnName="ConstructorSolution" />
+                <ScalarProperty Name="IssueDescription" ColumnName="IssueDescription" />
+                <ScalarProperty Name="Grid" ColumnName="Grid" />
+                <ScalarProperty Name="Tower" ColumnName="Tower" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="Sources" ColumnName="Sources" />
+                <ScalarProperty Name="NoOfRepeat" ColumnName="NoOfRepeat" />
+                <ScalarProperty Name="IssueStatus" ColumnName="IssueStatus" />
+                <ScalarProperty Name="IssueCode" ColumnName="IssueCode" />
+                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+                <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="C30_NTP_ProjectDetails">
+            <EntityTypeMapping TypeName="BIMservice.Models.C30_NTP_ProjectDetails">
+              <MappingFragment StoreEntitySet="30_NTP_ProjectDetails">
+                <ScalarProperty Name="MemberTakecare" ColumnName="MemberTakecare" />
+                <ScalarProperty Name="NTPID" ColumnName="NTPID" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="C31_ProjectPhaseDetails">
+            <EntityTypeMapping TypeName="BIMservice.Models.C31_ProjectPhaseDetails">
+              <MappingFragment StoreEntitySet="31_ProjectPhaseDetails">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="PhaseID" ColumnName="PhaseID" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="C32_ProjectPhase">
+            <EntityTypeMapping TypeName="BIMservice.Models.C32_ProjectPhase">
+              <MappingFragment StoreEntitySet="32_ProjectPhase">
+                <ScalarProperty Name="Desription" ColumnName="Desription" />
+                <ScalarProperty Name="PhaseName" ColumnName="PhaseName" />
+                <ScalarProperty Name="PhaseID" ColumnName="PhaseID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="C33_SolutionOffer">
+            <EntityTypeMapping TypeName="BIMservice.Models.C33_SolutionOffer">
+              <MappingFragment StoreEntitySet="33_SolutionOffer">
+                <ScalarProperty Name="IssueID" ColumnName="IssueID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="SolutionOffer" ColumnName="SolutionOffer" />
+                <ScalarProperty Name="ConstructorName" ColumnName="ConstructorName" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="IssueCode" ColumnName="IssueCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

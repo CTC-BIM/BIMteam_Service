@@ -194,7 +194,7 @@
     <Compile Include="Models\C23_Hinhthucdaotao.cs">
       <DependentUpon>BIMdb.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\C24_Issue.cs">
+    <Compile Include="Models\C24_IssueList.cs">
       <DependentUpon>BIMdb.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C25_BIM_RnDproject.cs">
@@ -207,6 +207,18 @@
       <DependentUpon>BIMdb.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C29_MucTieuTraining.cs">
+      <DependentUpon>BIMdb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C30_NTP_ProjectDetails.cs">
+      <DependentUpon>BIMdb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C31_ProjectPhaseDetails.cs">
+      <DependentUpon>BIMdb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C32_ProjectPhase.cs">
+      <DependentUpon>BIMdb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C33_SolutionOffer.cs">
       <DependentUpon>BIMdb.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

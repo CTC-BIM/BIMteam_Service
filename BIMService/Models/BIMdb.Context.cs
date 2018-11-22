@@ -49,10 +49,14 @@ namespace BIMService.Models
         public virtual DbSet<C21_SubjectList> C21_SubjectList { get; set; }
         public virtual DbSet<C22_CheckList> C22_CheckList { get; set; }
         public virtual DbSet<C23_Hinhthucdaotao> C23_Hinhthucdaotao { get; set; }
-        public virtual DbSet<C24_Issue> C24_Issue { get; set; }
         public virtual DbSet<C25_BIM_RnDproject> C25_BIM_RnDproject { get; set; }
         public virtual DbSet<C27_Topic> C27_Topic { get; set; }
         public virtual DbSet<C28_NTP> C28_NTP { get; set; }
         public virtual DbSet<C29_MucTieuTraining> C29_MucTieuTraining { get; set; }
+        public virtual DbSet<C24_IssueList> C24_IssueList { get; set; }
+        public virtual DbSet<C30_NTP_ProjectDetails> C30_NTP_ProjectDetails { get; set; }
+        public virtual DbSet<C31_ProjectPhaseDetails> C31_ProjectPhaseDetails { get; set; }
+        public virtual DbSet<C32_ProjectPhase> C32_ProjectPhase { get; set; }
+        public virtual DbSet<C33_SolutionOffer> C33_SolutionOffer { get; set; }
     }
 }

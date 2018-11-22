@@ -19,7 +19,6 @@ namespace BIMService.Models
         {
             this.C15_TimeSheet = new HashSet<C15_TimeSheet>();
             this.C18_CourseList = new HashSet<C18_CourseList>();
-            this.C24_Issue = new HashSet<C24_Issue>();
             this.C25_BIM_RnDproject = new HashSet<C25_BIM_RnDproject>();
             this.C27_Topic = new HashSet<C27_Topic>();
         }
@@ -36,16 +35,16 @@ namespace BIMService.Models
         public string Image { get; set; }
         public string UserType { get; set; }
         public string UserStatus { get; set; }
+        public Nullable<int> Descipline { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<C15_TimeSheet> C15_TimeSheet { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<C18_CourseList> C18_CourseList { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<C24_Issue> C24_Issue { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<C25_BIM_RnDproject> C25_BIM_RnDproject { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<C27_Topic> C27_Topic { get; set; }
+        public virtual C14_Descipline C14_Descipline { get; set; }
     }
 }
