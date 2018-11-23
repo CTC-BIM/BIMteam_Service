@@ -454,8 +454,7 @@
           <Property Name="SolutionOffer" Type="nvarchar(max)" />
           <Property Name="DateTime" Type="datetime" />
           <Property Name="Status" Type="nvarchar" MaxLength="50" />
-          <Property Name="ID" Type="int" Nullable="false" />
-          <Property Name="IssueID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <Association Name="FK_01_DesignProject_04_DMC_PMlist">
           <End Role="04_DMC_PMlist" Type="Self.04_DMC_PMlist" Multiplicity="0..1" />
@@ -1075,11 +1074,11 @@
           <Property Name="UserType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="UserStatus" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="C15_TimeSheet" Relationship="Self.FK_15_TimeSheet_02_BIMstaff" FromRole="C02_BIMstaff" ToRole="C15_TimeSheet" />
-          <NavigationProperty Name="C18_CourseList" Relationship="Self.FK_18_CourseList_02_BIMstaff" FromRole="C02_BIMstaff" ToRole="C18_CourseList" />
           <NavigationProperty Name="C25_BIM_RnDproject" Relationship="Self.FK_25_BIM_RnDproject_02_BIMstaff" FromRole="C02_BIMstaff" ToRole="C25_BIM_RnDproject" />
           <NavigationProperty Name="C27_Topic" Relationship="Self.FK_27_Topic_02_BIMstaff" FromRole="C02_BIMstaff" ToRole="C27_Topic" />
           <Property Name="Descipline" Type="Int32" />
           <NavigationProperty Name="C14_Descipline" Relationship="BIMservice.Models.FK_02_BIMstaff_14_Descipline" FromRole="C02_BIMstaff" ToRole="C14_Descipline" />
+          <NavigationProperty Name="C18_CourseList" Relationship="BIMservice.Models.FK_18_CourseList_02_BIMstaff" FromRole="C02_BIMstaff" ToRole="C18_CourseList" />
         </EntityType>
         <EntityType Name="C04_DMC_PMlist">
           <Key>
@@ -1253,23 +1252,6 @@
           <Property Name="SoLuongNhanVien" Type="Int32" />
           <NavigationProperty Name="C18_CourseList_Detail" Relationship="Self.FK_18_CourseList_Detail_17_CTCDepartment" FromRole="C17_CTCDepartment" ToRole="C18_CourseList_Detail" />
         </EntityType>
-        <EntityType Name="C18_CourseList">
-          <Key>
-            <PropertyRef Name="IDKhoahoc" />
-          </Key>
-          <Property Name="IDKhoahoc" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MemberID" Type="Int32" Nullable="false" />
-          <Property Name="TenKhoahoc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="MemberName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="NamDaotao" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Bomondaotao" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="SoKhoahoc" Type="Double" />
-          <Property Name="Ngaybatdau" Type="DateTime" Precision="0" />
-          <Property Name="NgayKetthuc" Type="DateTime" Precision="0" />
-          <Property Name="SSMA_TimeStamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="C02_BIMstaff" Relationship="Self.FK_18_CourseList_02_BIMstaff" FromRole="C18_CourseList" ToRole="C02_BIMstaff" />
-          <NavigationProperty Name="C21_SubjectList" Relationship="Self.FK_18_CourseList_21_SubjectList" FromRole="C18_CourseList" ToRole="C21_SubjectList" />
-        </EntityType>
         <EntityType Name="C18_CourseList_Detail">
           <Key>
             <PropertyRef Name="ID" />
@@ -1335,16 +1317,6 @@
           <Property Name="SSMA_TimeStamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="C18_CourseList_Detail" Relationship="Self.FK_18_CourseList_Detail_20_StudentList" FromRole="C20_StudentList" ToRole="C18_CourseList_Detail" />
           <NavigationProperty Name="C19_SubContractList" Relationship="Self.FK_20_StudentList_19_SubContractList" FromRole="C20_StudentList" ToRole="C19_SubContractList" />
-        </EntityType>
-        <EntityType Name="C21_SubjectList">
-          <Key>
-            <PropertyRef Name="MaMH" />
-          </Key>
-          <Property Name="MaMH" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="TenMonHoc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Baitapcuoikhoa" Type="Boolean" />
-          <Property Name="SSMA_TimeStamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="C18_CourseList" Relationship="Self.FK_18_CourseList_21_SubjectList" FromRole="C21_SubjectList" ToRole="C18_CourseList" />
         </EntityType>
         <EntityType Name="C22_CheckList">
           <Key>
@@ -1535,18 +1507,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_18_CourseList_02_BIMstaff">
-          <End Role="C02_BIMstaff" Type="Self.C02_BIMstaff" Multiplicity="1" />
-          <End Role="C18_CourseList" Type="Self.C18_CourseList" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="C02_BIMstaff">
-              <PropertyRef Name="BIMstaffID" />
-            </Principal>
-            <Dependent Role="C18_CourseList">
-              <PropertyRef Name="MemberID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_25_BIM_RnDproject_02_BIMstaff">
           <End Role="C02_BIMstaff" Type="Self.C02_BIMstaff" Multiplicity="1" />
           <End Role="C25_BIM_RnDproject" Type="Self.C25_BIM_RnDproject" Multiplicity="*" />
@@ -1643,18 +1603,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_18_CourseList_21_SubjectList">
-          <End Role="C21_SubjectList" Type="Self.C21_SubjectList" Multiplicity="0..1" />
-          <End Role="C18_CourseList" Type="Self.C18_CourseList" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="C21_SubjectList">
-              <PropertyRef Name="MaMH" />
-            </Principal>
-            <Dependent Role="C18_CourseList">
-              <PropertyRef Name="Bomondaotao" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_18_CourseList_Detail_20_StudentList">
           <End Role="C20_StudentList" Type="Self.C20_StudentList" Multiplicity="0..1" />
           <End Role="C18_CourseList_Detail" Type="Self.C18_CourseList_Detail" Multiplicity="*" />
@@ -1720,11 +1668,9 @@
           <EntitySet Name="C16_WorkType" EntityType="Self.C16_WorkType" />
           <EntitySet Name="C16a_WorkTypeGroup" EntityType="Self.C16a_WorkTypeGroup" />
           <EntitySet Name="C17_CTCDepartment" EntityType="Self.C17_CTCDepartment" />
-          <EntitySet Name="C18_CourseList" EntityType="Self.C18_CourseList" />
           <EntitySet Name="C18_CourseList_Detail" EntityType="Self.C18_CourseList_Detail" />
           <EntitySet Name="C19_SubContractList" EntityType="Self.C19_SubContractList" />
           <EntitySet Name="C20_StudentList" EntityType="Self.C20_StudentList" />
-          <EntitySet Name="C21_SubjectList" EntityType="Self.C21_SubjectList" />
           <EntitySet Name="C22_CheckList" EntityType="Self.C22_CheckList" />
           <EntitySet Name="C23_Hinhthucdaotao" EntityType="Self.C23_Hinhthucdaotao" />
           <EntitySet Name="C25_BIM_RnDproject" EntityType="Self.C25_BIM_RnDproject" />
@@ -1763,10 +1709,6 @@
             <End Role="C02_BIMstaff" EntitySet="C02_BIMstaff" />
             <End Role="C15_TimeSheet" EntitySet="C15_TimeSheet" />
           </AssociationSet>
-          <AssociationSet Name="FK_18_CourseList_02_BIMstaff" Association="Self.FK_18_CourseList_02_BIMstaff">
-            <End Role="C02_BIMstaff" EntitySet="C02_BIMstaff" />
-            <End Role="C18_CourseList" EntitySet="C18_CourseList" />
-          </AssociationSet>
           <AssociationSet Name="FK_25_BIM_RnDproject_02_BIMstaff" Association="Self.FK_25_BIM_RnDproject_02_BIMstaff">
             <End Role="C02_BIMstaff" EntitySet="C02_BIMstaff" />
             <End Role="C25_BIM_RnDproject" EntitySet="C25_BIM_RnDproject" />
@@ -1798,10 +1740,6 @@
           <AssociationSet Name="FK_18_CourseList_Detail_17_CTCDepartment" Association="Self.FK_18_CourseList_Detail_17_CTCDepartment">
             <End Role="C17_CTCDepartment" EntitySet="C17_CTCDepartment" />
             <End Role="C18_CourseList_Detail" EntitySet="C18_CourseList_Detail" />
-          </AssociationSet>
-          <AssociationSet Name="FK_18_CourseList_21_SubjectList" Association="Self.FK_18_CourseList_21_SubjectList">
-            <End Role="C21_SubjectList" EntitySet="C21_SubjectList" />
-            <End Role="C18_CourseList" EntitySet="C18_CourseList" />
           </AssociationSet>
           <AssociationSet Name="FK_18_CourseList_Detail_20_StudentList" Association="Self.FK_18_CourseList_Detail_20_StudentList">
             <End Role="C20_StudentList" EntitySet="C20_StudentList" />
@@ -1863,6 +1801,16 @@
           <AssociationSet Name="FK_31_ProjectPhaseDetails_32_ProjectPhase" Association="BIMservice.Models.FK_31_ProjectPhaseDetails_32_ProjectPhase">
             <End Role="C32_ProjectPhase" EntitySet="C32_ProjectPhase" />
             <End Role="C31_ProjectPhaseDetails" EntitySet="C31_ProjectPhaseDetails" />
+          </AssociationSet>
+          <EntitySet Name="C18_CourseList" EntityType="BIMservice.Models.C18_CourseList" />
+          <EntitySet Name="C21_SubjectList" EntityType="BIMservice.Models.C21_SubjectList" />
+          <AssociationSet Name="FK_18_CourseList_02_BIMstaff" Association="BIMservice.Models.FK_18_CourseList_02_BIMstaff">
+            <End Role="C02_BIMstaff" EntitySet="C02_BIMstaff" />
+            <End Role="C18_CourseList" EntitySet="C18_CourseList" />
+          </AssociationSet>
+          <AssociationSet Name="FK_18_CourseList_21_SubjectList" Association="BIMservice.Models.FK_18_CourseList_21_SubjectList">
+            <End Role="C21_SubjectList" EntitySet="C21_SubjectList" />
+            <End Role="C18_CourseList" EntitySet="C18_CourseList" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="C24_IssueList">
@@ -1947,7 +1895,6 @@
           <Property Name="DateTime" Type="DateTime" Precision="3" />
           <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="IssueID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="C24_IssueList" Relationship="BIMservice.Models.FK_33_SolutionOffer_24_Issue" FromRole="C33_SolutionOffer" ToRole="C24_IssueList" />
         </EntityType>
         <Association Name="FK_05a_TargetDetail_01_DesignProject">
@@ -2069,6 +2016,58 @@
             </Principal>
             <Dependent Role="C31_ProjectPhaseDetails">
               <PropertyRef Name="PhaseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="C18_CourseList">
+          <Key>
+            <PropertyRef Name="IDKhoahoc" />
+            <PropertyRef Name="MemberID" />
+          </Key>
+          <Property Name="IDKhoahoc" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MemberID" Type="Int32" Nullable="false" />
+          <Property Name="TenKhoahoc" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MemberName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NamDaotao" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Bomondaotao" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="SoKhoahoc" Type="Double" />
+          <Property Name="Ngaybatdau" Type="DateTime" Precision="0" />
+          <Property Name="NgayKetthuc" Type="DateTime" Precision="0" />
+          <Property Name="SSMA_TimeStamp" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="C02_BIMstaff" Relationship="BIMservice.Models.FK_18_CourseList_02_BIMstaff" FromRole="C18_CourseList" ToRole="C02_BIMstaff" />
+          <NavigationProperty Name="C21_SubjectList" Relationship="BIMservice.Models.FK_18_CourseList_21_SubjectList" FromRole="C18_CourseList" ToRole="C21_SubjectList" />
+        </EntityType>
+        <EntityType Name="C21_SubjectList">
+          <Key>
+            <PropertyRef Name="MaMH" />
+          </Key>
+          <Property Name="MaMH" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TenMonHoc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Baitapcuoikhoa" Type="Boolean" />
+          <Property Name="SSMA_TimeStamp" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="C18_CourseList" Relationship="BIMservice.Models.FK_18_CourseList_21_SubjectList" FromRole="C21_SubjectList" ToRole="C18_CourseList" />
+        </EntityType>
+        <Association Name="FK_18_CourseList_02_BIMstaff">
+          <End Type="BIMservice.Models.C02_BIMstaff" Role="C02_BIMstaff" Multiplicity="1" />
+          <End Type="BIMservice.Models.C18_CourseList" Role="C18_CourseList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="C02_BIMstaff">
+              <PropertyRef Name="BIMstaffID" />
+            </Principal>
+            <Dependent Role="C18_CourseList">
+              <PropertyRef Name="MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_18_CourseList_21_SubjectList">
+          <End Type="BIMservice.Models.C21_SubjectList" Role="C21_SubjectList" Multiplicity="0..1" />
+          <End Type="BIMservice.Models.C18_CourseList" Role="C18_CourseList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="C21_SubjectList">
+              <PropertyRef Name="MaMH" />
+            </Principal>
+            <Dependent Role="C18_CourseList">
+              <PropertyRef Name="Bomondaotao" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2296,22 +2295,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="C18_CourseList">
-            <EntityTypeMapping TypeName="BIMservice.Models.C18_CourseList">
-              <MappingFragment StoreEntitySet="18_CourseList">
-                <ScalarProperty Name="IDKhoahoc" ColumnName="IDKhoahoc" />
-                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
-                <ScalarProperty Name="TenKhoahoc" ColumnName="TenKhoahoc" />
-                <ScalarProperty Name="MemberName" ColumnName="MemberName" />
-                <ScalarProperty Name="NamDaotao" ColumnName="NamDaotao" />
-                <ScalarProperty Name="Bomondaotao" ColumnName="Bomondaotao" />
-                <ScalarProperty Name="SoKhoahoc" ColumnName="SoKhoahoc" />
-                <ScalarProperty Name="Ngaybatdau" ColumnName="Ngaybatdau" />
-                <ScalarProperty Name="NgayKetthuc" ColumnName="NgayKetthuc" />
-                <ScalarProperty Name="SSMA_TimeStamp" ColumnName="SSMA_TimeStamp" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="C18_CourseList_Detail">
             <EntityTypeMapping TypeName="BIMservice.Models.C18_CourseList_Detail">
               <MappingFragment StoreEntitySet="18_CourseList_Detail">
@@ -2368,16 +2351,6 @@
                 <ScalarProperty Name="KetquaXepLoai" ColumnName="KetquaXepLoai" />
                 <ScalarProperty Name="KhoaHoc" ColumnName="KhoaHoc" />
                 <ScalarProperty Name="Sub_Contractor" ColumnName="Sub-Contractor" />
-                <ScalarProperty Name="SSMA_TimeStamp" ColumnName="SSMA_TimeStamp" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="C21_SubjectList">
-            <EntityTypeMapping TypeName="BIMservice.Models.C21_SubjectList">
-              <MappingFragment StoreEntitySet="21_SubjectList">
-                <ScalarProperty Name="MaMH" ColumnName="MaMH" />
-                <ScalarProperty Name="TenMonHoc" ColumnName="TenMonHoc" />
-                <ScalarProperty Name="Baitapcuoikhoa" ColumnName="Baitapcuoikhoa" />
                 <ScalarProperty Name="SSMA_TimeStamp" ColumnName="SSMA_TimeStamp" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2536,7 +2509,6 @@
           <EntitySetMapping Name="C33_SolutionOffer">
             <EntityTypeMapping TypeName="BIMservice.Models.C33_SolutionOffer">
               <MappingFragment StoreEntitySet="33_SolutionOffer">
-                <ScalarProperty Name="IssueID" ColumnName="IssueID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="DateTime" ColumnName="DateTime" />
@@ -2544,6 +2516,32 @@
                 <ScalarProperty Name="ConstructorName" ColumnName="ConstructorName" />
                 <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
                 <ScalarProperty Name="IssueCode" ColumnName="IssueCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="C18_CourseList">
+            <EntityTypeMapping TypeName="BIMservice.Models.C18_CourseList">
+              <MappingFragment StoreEntitySet="18_CourseList">
+                <ScalarProperty Name="SSMA_TimeStamp" ColumnName="SSMA_TimeStamp" />
+                <ScalarProperty Name="NgayKetthuc" ColumnName="NgayKetthuc" />
+                <ScalarProperty Name="Ngaybatdau" ColumnName="Ngaybatdau" />
+                <ScalarProperty Name="SoKhoahoc" ColumnName="SoKhoahoc" />
+                <ScalarProperty Name="Bomondaotao" ColumnName="Bomondaotao" />
+                <ScalarProperty Name="NamDaotao" ColumnName="NamDaotao" />
+                <ScalarProperty Name="MemberName" ColumnName="MemberName" />
+                <ScalarProperty Name="TenKhoahoc" ColumnName="TenKhoahoc" />
+                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+                <ScalarProperty Name="IDKhoahoc" ColumnName="IDKhoahoc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="C21_SubjectList">
+            <EntityTypeMapping TypeName="BIMservice.Models.C21_SubjectList">
+              <MappingFragment StoreEntitySet="21_SubjectList">
+                <ScalarProperty Name="SSMA_TimeStamp" ColumnName="SSMA_TimeStamp" />
+                <ScalarProperty Name="Baitapcuoikhoa" ColumnName="Baitapcuoikhoa" />
+                <ScalarProperty Name="TenMonHoc" ColumnName="TenMonHoc" />
+                <ScalarProperty Name="MaMH" ColumnName="MaMH" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

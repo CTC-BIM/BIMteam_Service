@@ -71,6 +71,7 @@
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -101,9 +102,6 @@
       <DependentUpon>BIMdb.edmx</DependentUpon>
       <LastGenOutput>BIMdb.cs</LastGenOutput>
     </Content>
-    <Content Include="WCF Services\Member\MemberService.svc" />
-    <Content Include="WCF Services\Project\ProjectService.svc" />
-    <Content Include="WCF Services\Timesheet\TimesheetService.svc" />
     <Content Include="Web.config" />
     <Content Include="WebServices\MemberService.asmx" />
     <Content Include="WebServices\ProjectService.asmx" />
@@ -226,17 +224,6 @@
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="WCF Services\Member\IMemberService.cs" />
-    <Compile Include="WCF Services\Member\MemberService.svc.cs">
-      <DependentUpon>MemberService.svc</DependentUpon>
-    </Compile>
-    <Compile Include="WCF Services\Project\IProjectService.cs" />
-    <Compile Include="WCF Services\Project\ProjectService.svc.cs">
-      <DependentUpon>ProjectService.svc</DependentUpon>
-    </Compile>
-    <Compile Include="WCF Services\Timesheet\TimesheetService.svc.cs">
-      <DependentUpon>TimesheetService.svc</DependentUpon>
     </Compile>
     <Compile Include="WebServices\MemberService.asmx.cs">
       <DependentUpon>MemberService.asmx</DependentUpon>

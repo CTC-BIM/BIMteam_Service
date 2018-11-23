@@ -21,7 +21,6 @@ namespace BIMService.Models
         public Nullable<System.DateTime> DateTime { get; set; }
         public string Status { get; set; }
         public int ID { get; set; }
-        public int IssueID { get; set; }
     
         public virtual C24_IssueList C24_IssueList { get; set; }
     }

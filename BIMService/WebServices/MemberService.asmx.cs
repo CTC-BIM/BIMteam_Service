@@ -1,11 +1,8 @@
-﻿using System;
+﻿using BIMService.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Web;
 using System.Web.Services;
-using BIMService.Models;
-using System.Data.Entity;
 
 namespace BIMService.WebServices.Members
 {
@@ -21,6 +18,11 @@ namespace BIMService.WebServices.Members
     public class MemberService : System.Web.Services.WebService
     {
         private BIMdbContext db = new BIMdbContext();
+
+        /// <summary>
+        /// Hàm lấy danh sách toàn bộ nhân viên
+        /// </summary>
+        /// <returns></returns>
         [WebMethod]
         public List<MemberOutput> DanhSachMember()
         {
@@ -39,10 +41,15 @@ namespace BIMService.WebServices.Members
             return items;
         }
 
+        /// <summary>
+        /// Hàm tìm kiếm nhân viên theo Mã nhân viên
+        /// </summary>
+        /// <param name="id">Mã nhân viên - kiểu INT - từ 1 => 100</param>
+        /// <returns></returns>
         [WebMethod]
         public MemberOutput MemberbyID(int id)
         {
-            if (id == null || id < 0) return null;
+            if (id < 0) return null;
             C02_BIMstaff item = db.C02_BIMstaff.Find(id);
             if (item == null) return null;
             MemberOutput member = new MemberOutput()
@@ -58,6 +65,11 @@ namespace BIMService.WebServices.Members
             return member;
         }
 
+        /// <summary>
+        /// Hàm tìm kiếm nhân viên theo Tên nhân viên nhập vào
+        /// </summary>
+        /// <param name="name">Tên nhân viên - VD: "Tui nè"</param>
+        /// <returns></returns>
         [WebMethod]
         public MemberOutput MemberByName(string name)
         {
@@ -77,6 +89,11 @@ namespace BIMService.WebServices.Members
             return member;
         }
 
+        /// <summary>
+        /// Hàm tìm kiếm nhân viên theo Username
+        /// </summary>
+        /// <param name="username">VD: "nhantc"</param>
+        /// <returns></returns>
         [WebMethod]
         public MemberOutput MemberbyUsername(string username)
         {
@@ -95,6 +112,44 @@ namespace BIMService.WebServices.Members
             };
             return member;
         }
+
+        /// <summary>
+        /// Hàm tìm kiếm nhân viên theo Tình trạng làm việc
+        /// </summary>
+        /// <param name="username">"0": đang làm việc; "-1": đã nghỉ việc</param>
+        /// <returns></returns>
+        [WebMethod]
+        public List<MemberOutput> MemberbyTinhtrangLamViec(string tinhtrang)
+        {
+            if (tinhtrang == null || tinhtrang.Trim() == "") return null;
+            List<C02_BIMstaff> items = db.C02_BIMstaff.Where(s => s.UserStatus == tinhtrang).ToList();
+            if (items == null || items.Count == 0) return null;
+            List<MemberOutput> lstMember = new List<MemberOutput>();
+            foreach (C02_BIMstaff item in items)
+            {
+                MemberOutput it = new MemberOutput();
+                it.ID = item.BIMstaffID;
+                it.SoftName = item.Sortname;
+                it.UserName = item.Username;
+                it.Password = item.Password;
+                it.Department = item.Deparment;
+                it.UserType = item.UserType;
+                it.UserStatus = item.UserStatus;
+                lstMember.Add(it);
+            }
+            items.Clear();
+            return lstMember;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose(); // Xóa luôn biến db
+            }
+            base.Dispose(disposing);
+        }
+
     }
 
     [DataContract]

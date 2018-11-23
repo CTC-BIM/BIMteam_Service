@@ -1,12 +1,8 @@
-﻿using System;
+﻿using BIMService.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Services;
-
-using System.Data.Entity;
-using BIMService.Models;
 using System.Runtime.Serialization;
+using System.Web.Services;
 
 namespace BIMService.WebServices.Projects
 {
@@ -23,6 +19,10 @@ namespace BIMService.WebServices.Projects
     {
         private BIMdbContext db = new BIMdbContext();
 
+        /// <summary>
+        /// Hàm lấy danh sách Toàn bộ các dự án
+        /// </summary>
+        /// <returns></returns>
         [WebMethod]
         public List<DuAnOutput> GetProjectList()
         {
@@ -35,12 +35,19 @@ namespace BIMService.WebServices.Projects
                 ProjectState = s.ProjectState,
                 ARCmodel = s.Modeling_ARC_main,
                 STRmodel = s.Modeling_STR,
-                MEPmodel = s.Modeling_MEP
+                MEPmodel = s.Modeling_MEP,
+                propjectStatus = s.ProjectStatus,
+                projectPhase = s.ProjectPhase,
+                projectScope = s.ProjectScope
             }).ToList();
             return items;
         }
 
-
+        /// <summary>
+        /// Hàm tìm kiếm dự án theo tên dự án nhập vào
+        /// </summary>
+        /// <param name="name">Tên dự án - VD: "Berriver"</param>
+        /// <returns></returns>
         [WebMethod]
         public DuAnOutput TimDuAnTheoTen(string name)
         {
@@ -56,11 +63,20 @@ namespace BIMService.WebServices.Projects
                 ProjectState = item.ProjectState,
                 ARCmodel = item.Modeling_ARC_main,
                 STRmodel = item.Modeling_STR,
-                MEPmodel = item.Modeling_MEP
+                MEPmodel = item.Modeling_MEP,
+                propjectStatus = item.ProjectStatus,
+                projectPhase = item.ProjectPhase,
+                projectScope = item.ProjectScope
 
             };
             return project;
         }
+
+        /// <summary>
+        /// Hàm tìm kiếm dự án theo Mã dự án nhập vào
+        /// </summary>
+        /// <param name="id">Mã dự án - VD: "1646" hoặc "T1702"</param>
+        /// <returns></returns>
         [WebMethod]
         public DuAnOutput TimDuAnTheoId(string id)
         {
@@ -76,10 +92,55 @@ namespace BIMService.WebServices.Projects
                 ProjectState = item.ProjectState,
                 ARCmodel = item.Modeling_ARC_main,
                 STRmodel = item.Modeling_STR,
-                MEPmodel = item.Modeling_MEP
+                MEPmodel = item.Modeling_MEP,
+                propjectStatus = item.ProjectStatus,
+                projectPhase = item.ProjectPhase,
+                projectScope = item.ProjectScope
             };
             return project;
         }
+
+        /// <summary>
+        /// Hàm lấy danh sách các dự án thuộc phạm vi của phòng
+        /// </summary>
+        /// <param name="scope">"Ban BIM CTC" hoặc "Ban BIM MEP"</param>
+        /// <returns></returns>
+        [WebMethod]
+        public List<DuAnOutput> TimDuAnTheoScope(string scope)
+        {
+            if (scope == null || scope.Trim() == "") return null;
+            List<C01_DesignProject> items = db.C01_DesignProject.Where(s => s.ProjectScope == scope).ToList();
+            if (items == null || items.Count == 0) return null;
+            List<DuAnOutput> lstproject = new List<DuAnOutput>();
+            foreach (C01_DesignProject item in items)
+            {
+                DuAnOutput da = new DuAnOutput();
+                da.MaDuAn = item.ProjectID;
+                da.TenDuAn = item.ProjectName;
+                da.BIMmember = item.BIM_staff;
+                da.BIMMEP = item.BIM_MEP_staff;
+                da.ProjectState = item.ProjectState;
+                da.ARCmodel = item.Modeling_ARC_main;
+                da.STRmodel = item.Modeling_STR;
+                da.MEPmodel = item.Modeling_MEP;
+                da.propjectStatus = item.ProjectStatus;
+                da.projectPhase = item.ProjectPhase;
+                da.projectScope = item.ProjectScope;
+                lstproject.Add(da);
+            };
+            items.Clear();
+            return lstproject;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose(); // Xóa luôn biến db
+            }
+            base.Dispose(disposing);
+        }
+
     }
 
     [DataContract(IsReference = true)]
@@ -112,8 +173,14 @@ namespace BIMService.WebServices.Projects
         //[DataMember]
         //public string Outsource { get; set; }
 
-        //[DataMember]
-        //public string propjectStatus { get; set; }
+        [DataMember]
+        public string propjectStatus { get; set; }
+
+        [DataMember]
+        public string projectPhase { get; set; }
+
+        [DataMember]
+        public string projectScope { get; set; }
 
         //[DataMember]
         //public string BIMtarget { get; set; }

@@ -42,11 +42,9 @@ namespace BIMService.Models
         public virtual DbSet<C16_WorkType> C16_WorkType { get; set; }
         public virtual DbSet<C16a_WorkTypeGroup> C16a_WorkTypeGroup { get; set; }
         public virtual DbSet<C17_CTCDepartment> C17_CTCDepartment { get; set; }
-        public virtual DbSet<C18_CourseList> C18_CourseList { get; set; }
         public virtual DbSet<C18_CourseList_Detail> C18_CourseList_Detail { get; set; }
         public virtual DbSet<C19_SubContractList> C19_SubContractList { get; set; }
         public virtual DbSet<C20_StudentList> C20_StudentList { get; set; }
-        public virtual DbSet<C21_SubjectList> C21_SubjectList { get; set; }
         public virtual DbSet<C22_CheckList> C22_CheckList { get; set; }
         public virtual DbSet<C23_Hinhthucdaotao> C23_Hinhthucdaotao { get; set; }
         public virtual DbSet<C25_BIM_RnDproject> C25_BIM_RnDproject { get; set; }
@@ -58,5 +56,7 @@ namespace BIMService.Models
         public virtual DbSet<C31_ProjectPhaseDetails> C31_ProjectPhaseDetails { get; set; }
         public virtual DbSet<C32_ProjectPhase> C32_ProjectPhase { get; set; }
         public virtual DbSet<C33_SolutionOffer> C33_SolutionOffer { get; set; }
+        public virtual DbSet<C18_CourseList> C18_CourseList { get; set; }
+        public virtual DbSet<C21_SubjectList> C21_SubjectList { get; set; }
     }
 }

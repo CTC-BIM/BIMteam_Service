@@ -1,6 +1,7 @@
 ﻿using BIMService.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Web.Services;
@@ -51,6 +52,7 @@ namespace BIMService.WebServices.Timesheets
                 newitem.WorkGroup = wg;
                 listTimesheet.Add(newitem);
             };
+            items.Clear();
             return listTimesheet;
         }
 
@@ -85,12 +87,47 @@ namespace BIMService.WebServices.Timesheets
                 newitem.WorkGroup = wg;
                 listTimesheet.Add(newitem);
             };
+            items.Clear();
             return listTimesheet;
         }
 
+        [WebMethod]
+        public string AddWorkDone(TimesheetInput enity)
+        {
+            string kq = "Add Work Done false";
+            if (enity == null) return "Error: Work done is null value";
+            string id, username, ProjectName, workgroup;
+
+
+
+            return kq;
+        }
+
+        /// <summary>
+        /// Hàm trả về danh sách Công tác trong ngày
+        /// </summary>
+        /// <returns></returns>
+        [WebMethod]
+        public List<C16_WorkType> WorkTypeList()
+        {
+            return db.C16_WorkType.ToList();
+        }
+
+
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose(); // Xóa luôn biến db
+            }
+            base.Dispose(disposing);
+        }
     }
 
-
+    /// <summary>
+    /// Enity đọc ra từ Database
+    /// </summary>
     [DataContract]
     public class TimesheetOutput
     {
@@ -99,7 +136,7 @@ namespace BIMService.WebServices.Timesheets
 
         [DataMember]
         public string MemberName { get; set; }
-        
+
         [DataMember]
         public string ProjectID { get; set; }
 
@@ -125,38 +162,57 @@ namespace BIMService.WebServices.Timesheets
         public string Description { get; set; }
     }
 
+
+    /// <summary>
+    /// Enity ghi vào Database
+    /// Các Fields truyền về: MemberID,ProjectID,RecordDate,WorkID,Hour,OT,Description
+    /// Các Fields không truyền về: MemberName,ProjectName,WorkGroup,WorkType
+    /// </summary>
     [DataContract]
     public class TimesheetInput
     {
         [DataMember]
+        [Required(ErrorMessage ="Không để trống MemberID")]
         public int MemberID { get; set; }
-
+        
         [DataMember]
-        public string MemberName { get; set; }
-
-        [DataMember]
+        [Required(ErrorMessage = "Không để trống ProjectID")]
         public string ProjectID { get; set; }
 
         [DataMember]
+        [Required(ErrorMessage ="Không để trống ngày ghi công tác")]
         public DateTime RecordDate { get; set; }
 
         [DataMember]
-        public string ProjectName { get; set; }
+        [Required(ErrorMessage ="Không để trống công tác trong ngày")]
+        public string WorkID { get; set; }
 
         [DataMember]
-        public string WorkType { get; set; }
-
-        [DataMember]
-        public int WorkGroup { get; set; }
-
-        [DataMember]
+        [Required(ErrorMessage ="Không được để trống")]
+        [Range(1,8,ErrorMessage ="Không được lớn hơn 8h/ngày")]
         public double Hour { get; set; }
 
         [DataMember]
+        [Range(1, 8, ErrorMessage = "Không được lớn hơn 12h/ngày")]
         public double OT { get; set; }
 
         [DataMember]
+        [Required(ErrorMessage ="Không để trống, Cần có ghi chú công việc")]
         public string Description { get; set; }
+
+        //Không truyền về server
+        //[DataMember]
+        //public int WorkGroup { get; set; }
+
+        //[DataMember]
+        //public int WorkType { get; set; }
+
+        //[DataMember]
+        //public string ProjectName { get; set; }
+
+        //[DataMember]
+        //public string MemberName { get; set; }
     }
+
 
 }
