@@ -6,8 +6,33 @@ using System.Web.Services;
 
 namespace BIMService.WebServices.Members
 {
+    #region DataContract
+    [DataContract]
+    public class MemberOutput
+    {
+        [DataMember]
+        public int ID { get; set; }
+        [DataMember]
+        public string SoftName { get; set; }
+        [DataMember]
+        public string UserName { get; set; }
+        [DataMember]
+        public string Password { get; set; }
+        [DataMember]
+        public string UserType { get; set; }
+        [DataMember]
+        public string Department { get; set; }
+        [DataMember]
+        public string UserStatus { get; set; }
+    }
+    #endregion
+
+    #region Services
     /// <summary>
-    /// Summary description for MemberService
+    /// Services cung cấp thông tin Member
+    /// Bao gồm
+    /// 1. Danh sách nhân viên
+    /// 2. Tìm kiếm nhân viên theo Tên hoặc UserName hoặc MãNV-ID hoặc Tình trạng làm việc
     /// </summary>
     //[WebService(Namespace = "http://tempuri.org/")]
     [WebService(Namespace = "http://services.cbimtech.com/WebServices/")]
@@ -20,7 +45,7 @@ namespace BIMService.WebServices.Members
         private BIMdbContext db = new BIMdbContext();
 
         /// <summary>
-        /// Hàm lấy danh sách toàn bộ nhân viên
+        /// Service lấy danh sách toàn bộ nhân viên
         /// </summary>
         /// <returns></returns>
         [WebMethod]
@@ -42,7 +67,7 @@ namespace BIMService.WebServices.Members
         }
 
         /// <summary>
-        /// Hàm tìm kiếm nhân viên theo Mã nhân viên
+        /// Service tìm kiếm nhân viên theo Mã nhân viên
         /// </summary>
         /// <param name="id">Mã nhân viên - kiểu INT - từ 1 => 100</param>
         /// <returns></returns>
@@ -66,7 +91,7 @@ namespace BIMService.WebServices.Members
         }
 
         /// <summary>
-        /// Hàm tìm kiếm nhân viên theo Tên nhân viên nhập vào
+        /// Service tìm kiếm nhân viên theo Tên nhân viên nhập vào
         /// </summary>
         /// <param name="name">Tên nhân viên - VD: "Tui nè"</param>
         /// <returns></returns>
@@ -90,7 +115,7 @@ namespace BIMService.WebServices.Members
         }
 
         /// <summary>
-        /// Hàm tìm kiếm nhân viên theo Username
+        /// Service tìm kiếm nhân viên theo Username
         /// </summary>
         /// <param name="username">VD: "nhantc"</param>
         /// <returns></returns>
@@ -114,7 +139,7 @@ namespace BIMService.WebServices.Members
         }
 
         /// <summary>
-        /// Hàm tìm kiếm nhân viên theo Tình trạng làm việc
+        /// Service tìm kiếm nhân viên theo Tình trạng làm việc
         /// </summary>
         /// <param name="username">"0": đang làm việc; "-1": đã nghỉ việc</param>
         /// <returns></returns>
@@ -152,22 +177,6 @@ namespace BIMService.WebServices.Members
 
     }
 
-    [DataContract]
-    public class MemberOutput
-    {
-        [DataMember]
-        public int ID { get; set; }
-        [DataMember]
-        public string SoftName { get; set; }
-        [DataMember]
-        public string UserName { get; set; }
-        [DataMember]
-        public string Password { get; set; }
-        [DataMember]
-        public string UserType { get; set; }
-        [DataMember]
-        public string Department { get; set; }
-        [DataMember]
-        public string UserStatus { get; set; }
-    }
+    #endregion
+
 }

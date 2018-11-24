@@ -7,7 +7,11 @@ using System.Web.Services;
 namespace BIMService.WebServices.Projects
 {
     /// <summary>
-    /// Summary description for ProjectService
+    /// Services cung cấp thông tin Dự án ban BIM
+    /// Bao gồm
+    /// 1. Lấy danh sách Toàn bộ các dự án
+    /// 2. Danh sách dự án theo Ban BIM hoặc BIM MEP
+    /// 3. Tìm kiếm thông tin 1 dự án theo Tên dự án hoặc theo Mã dự án
     /// </summary>
     //[WebService(Namespace = "http://tempuri.org/")]
     [WebService(Namespace = "http://services.cbimtech.com/WebServices/")]
@@ -20,7 +24,7 @@ namespace BIMService.WebServices.Projects
         private BIMdbContext db = new BIMdbContext();
 
         /// <summary>
-        /// Hàm lấy danh sách Toàn bộ các dự án
+        /// Service lấy danh sách Toàn bộ các dự án
         /// </summary>
         /// <returns></returns>
         [WebMethod]
@@ -44,7 +48,7 @@ namespace BIMService.WebServices.Projects
         }
 
         /// <summary>
-        /// Hàm tìm kiếm dự án theo tên dự án nhập vào
+        /// Service tìm kiếm dự án theo tên dự án nhập vào
         /// </summary>
         /// <param name="name">Tên dự án - VD: "Berriver"</param>
         /// <returns></returns>
@@ -73,7 +77,7 @@ namespace BIMService.WebServices.Projects
         }
 
         /// <summary>
-        /// Hàm tìm kiếm dự án theo Mã dự án nhập vào
+        /// Service tìm kiếm dự án theo Mã dự án nhập vào
         /// </summary>
         /// <param name="id">Mã dự án - VD: "1646" hoặc "T1702"</param>
         /// <returns></returns>
@@ -101,7 +105,7 @@ namespace BIMService.WebServices.Projects
         }
 
         /// <summary>
-        /// Hàm lấy danh sách các dự án thuộc phạm vi của phòng
+        /// Service lấy danh sách các dự án ban BIM hoặc BIM MEP
         /// </summary>
         /// <param name="scope">"Ban BIM CTC" hoặc "Ban BIM MEP"</param>
         /// <returns></returns>
