@@ -6,6 +6,81 @@ using System.Web.Services;
 
 namespace BIMService.WebServices.Projects
 {
+    #region DataContracts
+    [DataContract(IsReference = true)]
+    public class DuAnOutput
+    {
+        [DataMember]
+        public string MaDuAn { get; set; }
+
+        [DataMember]
+        public string TenDuAn { get; set; }
+
+        [DataMember]
+        public string BIMmember { get; set; }
+
+        [DataMember]
+        public string ProjectState { get; set; }
+
+        [DataMember]
+        public string BIMMEP { get; set; }
+
+        [DataMember]
+        public string ARCmodel { get; set; }
+
+        [DataMember]
+        public string STRmodel { get; set; }
+
+        [DataMember]
+        public string MEPmodel { get; set; }
+
+        //[DataMember]
+        //public string Outsource { get; set; }
+
+        [DataMember]
+        public string propjectStatus { get; set; }
+
+        [DataMember]
+        public string projectPhase { get; set; }
+
+        [DataMember]
+        public string projectScope { get; set; }
+
+        //[DataMember]
+        //public string BIMtarget { get; set; }
+
+        //[DataMember]
+        //public int ProjectType { get; set; }
+
+        //[DataMember]
+        //public int ProjectManager { get; set; }
+
+
+
+        //[DataMember]
+        //public DateTime Startdate { get; set; }
+
+        //[DataMember]
+        //public string TrackingDetail { get; set; }
+
+        //[DataMember]
+        //public string Problems { get; set; }
+
+        //[DataMember]
+        //public string Solution { get; set; }
+
+        //[DataMember]
+        //public int TongSoDuAn { get; set; }
+
+        //[DataMember]
+        //public string projectYear { get; set; }
+
+    }
+
+    #endregion
+
+    #region Project Services
+
     /// <summary>
     /// Services cung cấp thông tin Dự án ban BIM
     /// Bao gồm
@@ -147,74 +222,6 @@ namespace BIMService.WebServices.Projects
 
     }
 
-    [DataContract(IsReference = true)]
-    public class DuAnOutput
-    {
-        [DataMember]
-        public string MaDuAn { get; set; }
-
-        [DataMember]
-        public string TenDuAn { get; set; }
-
-        [DataMember]
-        public string BIMmember { get; set; }
-
-        [DataMember]
-        public string ProjectState { get; set; }
-
-        [DataMember]
-        public string BIMMEP { get; set; }
-
-        [DataMember]
-        public string ARCmodel { get; set; }
-
-        [DataMember]
-        public string STRmodel { get; set; }
-
-        [DataMember]
-        public string MEPmodel { get; set; }
-
-        //[DataMember]
-        //public string Outsource { get; set; }
-
-        [DataMember]
-        public string propjectStatus { get; set; }
-
-        [DataMember]
-        public string projectPhase { get; set; }
-
-        [DataMember]
-        public string projectScope { get; set; }
-
-        //[DataMember]
-        //public string BIMtarget { get; set; }
-
-        //[DataMember]
-        //public int ProjectType { get; set; }
-
-        //[DataMember]
-        //public int ProjectManager { get; set; }
-
-
-
-        //[DataMember]
-        //public DateTime Startdate { get; set; }
-
-        //[DataMember]
-        //public string TrackingDetail { get; set; }
-
-        //[DataMember]
-        //public string Problems { get; set; }
-
-        //[DataMember]
-        //public string Solution { get; set; }
-
-        //[DataMember]
-        //public int TongSoDuAn { get; set; }
-
-        //[DataMember]
-        //public string projectYear { get; set; }
-
-    }
+    #endregion
 
 }

@@ -22,8 +22,8 @@ namespace BIMService.Models
         public string ProjectName { get; set; }
         public string WorkType { get; set; }
         public Nullable<int> WorkGroup { get; set; }
-        public Nullable<int> Hour { get; set; }
-        public Nullable<int> OvertimeHour { get; set; }
+        public int Hour { get; set; }
+        public int OvertimeHour { get; set; }
         public string Description { get; set; }
     
         public virtual C01_DesignProject C01_DesignProject { get; set; }

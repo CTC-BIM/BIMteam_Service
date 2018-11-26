@@ -27,7 +27,7 @@ namespace BIMService.WebServices.Members
     }
     #endregion
 
-    #region Services
+    #region Member Services
     /// <summary>
     /// Services cung cấp thông tin Member
     /// Bao gồm

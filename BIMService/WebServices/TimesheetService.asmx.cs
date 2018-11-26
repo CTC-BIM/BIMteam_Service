@@ -8,6 +8,115 @@ using System.Web.Services;
 
 namespace BIMService.WebServices.Timesheets
 {
+
+    #region DataContract
+    /// <summary>
+    /// Gói dữ liệu TImesheet trả về cho Request
+    /// </summary>
+    [DataContract]
+    public class TimesheetOutput
+    {
+        [DataMember]
+        public int MemberID { get; set; }
+
+        [DataMember]
+        public string MemberName { get; set; }
+
+        [DataMember]
+        public string ProjectID { get; set; }
+
+        [DataMember]
+        public DateTime RecordDate { get; set; }
+
+        [DataMember]
+        public string ProjectName { get; set; }
+
+        [DataMember]
+        public string WorkType { get; set; }
+
+        [DataMember]
+        public int WorkGroup { get; set; }
+
+        [DataMember]
+        public double Hour { get; set; }
+
+        [DataMember]
+        public double OT { get; set; }
+
+        [DataMember]
+        public string Description { get; set; }
+    }
+
+    /// <summary>
+    /// Enity WorkName đọc ra từ Database
+    /// </summary>
+    [DataContract]
+    public class WorkNameOutput
+    {
+        [DataMember]
+        public int WorkID { get; set; }
+        [DataMember]
+        public string WorkName { get; set; }
+        [DataMember]
+        public int? WorkGroup { get; set; }
+    }
+
+    /// <summary>
+    /// Enity Timesheet ghi vào Database
+    /// Các Fields truyền về: MemberID,ProjectID,RecordDate,WorkID,Hour,OT,Description
+    /// Các Fields không truyền về: MemberName,ProjectName,WorkGroup,WorkType
+    /// </summary>
+    [DataContract]
+    public class TimesheetInput
+    {
+        [DataMember]
+        [Required(ErrorMessage = "Không để trống MemberID")]
+        public int MemberID { get; set; }
+
+        [DataMember]
+        [Required(ErrorMessage = "Không để trống ProjectID")]
+        public string ProjectID { get; set; }
+
+        [DataMember]
+        [Required(ErrorMessage = "Không để trống ngày ghi công tác")]
+        public DateTime RecordDate { get; set; }
+
+        [DataMember]
+        [Required(ErrorMessage = "Không để trống công tác trong ngày")]
+        public int WorkID { get; set; }
+
+        [DataMember]
+        [Required(ErrorMessage = "Không được để trống")]
+        [Range(1, 8, ErrorMessage = "Không được lớn hơn 8h/ngày")]
+        public int Hour { get; set; }
+
+        [DataMember]
+        [Range(1, 8, ErrorMessage = "Không được lớn hơn 12h/ngày")]
+        public int OT { get; set; }
+
+        [DataMember]
+        [Required(ErrorMessage = "Không để trống, Cần có ghi chú công việc")]
+        public string Description { get; set; }
+
+        //Không truyền về server
+        //[DataMember]
+        //public int WorkGroup { get; set; }
+
+        //[DataMember]
+        //public int WorkType { get; set; }
+
+        //[DataMember]
+        //public string ProjectName { get; set; }
+
+        //[DataMember]
+        //public string MemberName { get; set; }
+    }
+
+
+    #endregion
+
+    #region Timesheet Services
+
     /// <summary>
     /// Services cung cấp thông tin về WorkDone
     /// Bao gồm
@@ -15,7 +124,8 @@ namespace BIMService.WebServices.Timesheets
     /// 2. Danh sách công tác của 1 thành viên nào đó
     /// 3. Cung cấp danh sách Tên công tác
     /// 4. Tìm kiếm công tác nào đó theo ID
-    /// 5. Ghi Công việc hoàn tất vào Database ban BIM
+    /// 5. Tìm kiếm các công việc theo nhóm ID
+    /// 6. Ghi Công việc hoàn tất vào Database ban BIM
     /// </summary>
     //[WebService(Namespace = "http://tempuri.org/")]
     [WebService(Namespace = "http://services.cbimtech.com/WebServices/")]
@@ -26,7 +136,8 @@ namespace BIMService.WebServices.Timesheets
     public class TimesheetService : System.Web.Services.WebService
     {
         private BIMdbContext db = new BIMdbContext();
-
+        #region Nhóm Result services         
+        //1
         /// <summary>
         /// Service trả về danh sách công tác thực hiện cho dự án
         /// Sắp xếp theo ngày mới nhất đầu tiên
@@ -50,6 +161,7 @@ namespace BIMService.WebServices.Timesheets
                 hour = int.Parse(item.Hour.ToString());
                 OT = int.Parse(item.OvertimeHour.ToString());
                 newitem.MemberID = item.MemberID;
+                newitem.MemberName = item.MemberName;
                 newitem.ProjectID = item.ProjectID;
                 newitem.ProjectName = item.ProjectName;
                 newitem.RecordDate = item.RecordDate;
@@ -64,6 +176,7 @@ namespace BIMService.WebServices.Timesheets
             return listTimesheet;
         }
 
+        //2
         /// <summary>
         /// Service tìm kiếm Timesheet theo MemberID
         /// Sắp xếp theo ngày mới nhất đầu tiên
@@ -105,23 +218,7 @@ namespace BIMService.WebServices.Timesheets
             return listTimesheet;
         }
 
-        /// <summary>
-        /// Service thêm công việc hoàn tất trong ngày
-        /// </summary>
-        /// <param name="enity"></param>
-        /// <returns></returns>
-        [WebMethod]
-        public string AddWorkDone(TimesheetInput enity)
-        {
-            string kq = "Add Work Done false";
-            if (enity == null) return "Error: Work done is null value";
-            string id, username, ProjectName, workgroup;
-
-
-
-            return kq;
-        }
-
+        //3
         /// <summary>
         /// Service trả về danh sách Công tác trong ngày
         /// </summary>
@@ -143,6 +240,7 @@ namespace BIMService.WebServices.Timesheets
             return lstWorkName;
         }
 
+        //4
         /// <summary>
         /// Service tìm kiếm Công tác theo ID công việc
         /// </summary>
@@ -161,12 +259,17 @@ namespace BIMService.WebServices.Timesheets
             return wn;
         }
 
+        //5
+        /// <summary>
+        /// Service tìm kiếm các công việc theo ID nhóm công tác
+        /// </summary>
+        /// <param name="groupID">Mã nhóm</param>
+        /// <returns></returns>
         [WebMethod]
-        public List<WorkNameOutput> FindWorkInGroup(int gID)
+        public List<WorkNameOutput> FindWorkInGroup(int groupID)
         {
-            if (gID < 0) gID = 1;
-
-            List<C16_WorkType> items = db.C16_WorkType.Where(s => s.WorkGroup == gID).ToList();
+            if (groupID < 0) groupID = 1;
+            List<C16_WorkType> items = db.C16_WorkType.Where(s => s.WorkGroup == groupID).ToList();
             List<WorkNameOutput> lstWorkName = new List<WorkNameOutput>();
             foreach (C16_WorkType item in items)
             {
@@ -180,6 +283,98 @@ namespace BIMService.WebServices.Timesheets
             return lstWorkName;
         }
 
+        #endregion
+
+        #region Nhóm CRUD
+        /// <summary>
+        /// Service thêm công việc hoàn tất trong ngày
+        /// </summary>
+        /// <param name="enity"></param>
+        /// <returns>string Kết quả = TRUE or FALSE</returns>
+        [WebMethod]
+        public string AddWorkDone(TimesheetInput enity)
+        {
+            if (enity == null) throw new Exception("False because is NULL value");
+            string username, ProjectName, workName;
+            int? workGroup;
+            bool checkUserHour = false;
+            //Lấy UserName từ Database
+            var user = db.C02_BIMstaff.FirstOrDefault(s => s.BIMstaffID == enity.MemberID);
+            username = user.Staff_name;
+            //Lấy ra ProjectName
+            var project = db.C01_DesignProject.FirstOrDefault(s => s.ProjectID == enity.ProjectID);
+            ProjectName = project.ProjectName;
+            //Lấy ra WorkName và WorkGroup từ WorkID truyền về
+            var work = db.C16_WorkType.FirstOrDefault(s => s.WorkID == enity.WorkID);
+            workName = work.WorkName;
+            workGroup = work.WorkGroup != null ? work.WorkGroup : 1;
+            checkUserHour = KiemtraSoGioTrongNgay(enity.RecordDate, enity.Hour, enity.OT);
+            try
+            {
+                string kq = "Add Work Done false";
+                if (checkUserHour)
+                {
+                    C15_TimeSheet newRecord = new C15_TimeSheet();
+                    newRecord.MemberID = enity.MemberID;
+                    newRecord.MemberName = username;
+                    newRecord.ProjectID = enity.ProjectID;
+                    newRecord.RecordDate = enity.RecordDate;
+                    newRecord.ProjectName = ProjectName;
+                    newRecord.WorkType = workName;
+                    newRecord.WorkGroup = workGroup;
+                    newRecord.Hour = enity.Hour;
+                    newRecord.OvertimeHour = enity.OT;
+                    newRecord.Description = enity.Description;
+                    db.C15_TimeSheet.Add(newRecord);
+                    db.SaveChanges();
+                    kq = "Add Work Done SUCCESSFUL";
+                }
+                return kq;
+            }
+            catch (Exception ex)
+            {
+                return "Add Work Done FALSE because " + ex.Message;
+            }
+
+        }
+
+
+        /// <summary>
+        /// Kiểm tra số giờ Record trong ngày
+        /// </summary>
+        /// <param name="recordDate">Ngày Record</param>
+        /// <param name="hour">Số giờ chính</param>
+        /// <param name="oT">Số giờ tăng ca</param>
+        /// <returns>True: có thể thêm Record, FALSE: do Hour > 8h hoặc OT > 15h</returns>
+        private bool KiemtraSoGioTrongNgay(DateTime recordDate, int hour, int oT)
+        {
+            bool kq = false;
+            int TotalHour = 0;
+            int TotalOT = 0;
+            List<C15_TimeSheet> recordperDate = db.C15_TimeSheet.Where(s => s.RecordDate == recordDate).ToList();
+            if (recordperDate == null) return kq = true;
+            foreach (var item in recordperDate)
+            {
+                TotalHour += item.Hour;
+                TotalOT += item.OvertimeHour;
+            }
+            if (TotalHour < 8 && TotalOT < 15) return kq = true;
+            else return kq;
+        }
+
+        #endregion
+
+
+
+
+
+
+
+
+
+
+
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -190,104 +385,6 @@ namespace BIMService.WebServices.Timesheets
         }
     }
 
-    /// <summary>
-    /// Enity đọc ra từ Database
-    /// </summary>
-    [DataContract]
-    public class TimesheetOutput
-    {
-        [DataMember]
-        public int MemberID { get; set; }
-
-        [DataMember]
-        public string MemberName { get; set; }
-
-        [DataMember]
-        public string ProjectID { get; set; }
-
-        [DataMember]
-        public DateTime RecordDate { get; set; }
-
-        [DataMember]
-        public string ProjectName { get; set; }
-
-        [DataMember]
-        public string WorkType { get; set; }
-
-        [DataMember]
-        public int WorkGroup { get; set; }
-
-        [DataMember]
-        public double Hour { get; set; }
-
-        [DataMember]
-        public double OT { get; set; }
-
-        [DataMember]
-        public string Description { get; set; }
-    }
-
-    /// <summary>
-    /// Enity ghi vào Database
-    /// Các Fields truyền về: MemberID,ProjectID,RecordDate,WorkID,Hour,OT,Description
-    /// Các Fields không truyền về: MemberName,ProjectName,WorkGroup,WorkType
-    /// </summary>
-    [DataContract]
-    public class TimesheetInput
-    {
-        [DataMember]
-        [Required(ErrorMessage = "Không để trống MemberID")]
-        public int MemberID { get; set; }
-
-        [DataMember]
-        [Required(ErrorMessage = "Không để trống ProjectID")]
-        public string ProjectID { get; set; }
-
-        [DataMember]
-        [Required(ErrorMessage = "Không để trống ngày ghi công tác")]
-        public DateTime RecordDate { get; set; }
-
-        [DataMember]
-        [Required(ErrorMessage = "Không để trống công tác trong ngày")]
-        public string WorkID { get; set; }
-
-        [DataMember]
-        [Required(ErrorMessage = "Không được để trống")]
-        [Range(1, 8, ErrorMessage = "Không được lớn hơn 8h/ngày")]
-        public double Hour { get; set; }
-
-        [DataMember]
-        [Range(1, 8, ErrorMessage = "Không được lớn hơn 12h/ngày")]
-        public double OT { get; set; }
-
-        [DataMember]
-        [Required(ErrorMessage = "Không để trống, Cần có ghi chú công việc")]
-        public string Description { get; set; }
-
-        //Không truyền về server
-        //[DataMember]
-        //public int WorkGroup { get; set; }
-
-        //[DataMember]
-        //public int WorkType { get; set; }
-
-        //[DataMember]
-        //public string ProjectName { get; set; }
-
-        //[DataMember]
-        //public string MemberName { get; set; }
-    }
-
-    [DataContract]
-    public class WorkNameOutput
-    {
-        [DataMember]
-        public int WorkID { get; set; }
-        [DataMember]
-        public string WorkName { get; set; }
-        [DataMember]
-        public int? WorkGroup { get; set; }
-
-    }
+    #endregion
 
 }

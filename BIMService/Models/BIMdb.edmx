@@ -181,8 +181,8 @@
           <Property Name="ProjectName" Type="nvarchar" MaxLength="250" />
           <Property Name="WorkType" Type="nvarchar" MaxLength="250" />
           <Property Name="WorkGroup" Type="int" />
-          <Property Name="Hour" Type="int" />
-          <Property Name="OvertimeHour" Type="int" />
+          <Property Name="Hour" Type="int" Nullable="false" />
+          <Property Name="OvertimeHour" Type="int" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="800" />
         </EntityType>
         <EntityType Name="16_WorkType">
@@ -1215,8 +1215,8 @@
           <Property Name="ProjectName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="WorkType" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="WorkGroup" Type="Int32" />
-          <Property Name="Hour" Type="Int32" />
-          <Property Name="OvertimeHour" Type="Int32" />
+          <Property Name="Hour" Type="Int32" Nullable="false" />
+          <Property Name="OvertimeHour" Type="Int32" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="800" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="C01_DesignProject" Relationship="Self.FK_15_TimeSheet_01_DesignProject" FromRole="C15_TimeSheet" ToRole="C01_DesignProject" />
           <NavigationProperty Name="C02_BIMstaff" Relationship="Self.FK_15_TimeSheet_02_BIMstaff" FromRole="C15_TimeSheet" ToRole="C02_BIMstaff" />
