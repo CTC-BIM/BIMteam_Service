@@ -16,8 +16,16 @@ namespace BIMService.WebServices
     public class FilesUploadService : System.Web.Services.WebService
     {
 
+        /// <summary>
+        /// Service Truyền file từ Local đến Server
+        /// </summary>
+        /// <param name="fileName">Tên File</param>
+        /// <param name="f">Data truyền</param>
+        /// <param name="dest">Nơi lưu file: BCFs | BEPs | Images | Reports</param>
+        /// <param name="ProjectID">Mã dự án</param>
+        /// <returns>Thành công sẽ báo: "Upload File Success" - File sẽ được lưu với tên: MaDuAn-FileType-TenFile</returns>
         [WebMethod]
-        public string UploadFiles(string fileName, byte[] f, string dest)
+        public string UploadFiles(string fileName, byte[] f, string dest, string ProjectID)
         {
             try
             {
@@ -25,8 +33,9 @@ namespace BIMService.WebServices
                 //Thay đổi tên FileUpload
                 //[Project]-[Type]-[fileName]-[Date]
                 MemoryStream ms = new MemoryStream(f);
-
-                string path = Server.MapPath("../FileStorage/" + dest + "/" + fileName);//Cần chỉnh sửa filename trước khi Write
+                
+                string FileNameUpload = ProjectID + "-" + dest + "-" + fileName;
+                string path = Server.MapPath("../FileStorage/" + dest + "/" + FileNameUpload);//Cần chỉnh sửa filename trước khi Write
                 FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write);
                 WriteFileToStorage(ms, fs);
                 //ms.WriteTo(fs);
