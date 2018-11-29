@@ -69,11 +69,6 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PresentationFramework" />
-    <Reference Include="PresentationFramework.Aero" />
-    <Reference Include="presentationframework.aero2" />
-    <Reference Include="presentationframework.aerolite" />
-    <Reference Include="PresentationFramework.Classic" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Net.Http" />
@@ -108,7 +103,6 @@
       <LastGenOutput>BIMdb.cs</LastGenOutput>
     </Content>
     <Content Include="Web.config" />
-    <Content Include="WebServices\FilesUploadService.asmx" />
     <Content Include="WebServices\MemberService.asmx" />
     <Content Include="WebServices\ProjectService.asmx" />
     <Content Include="WebServices\TimesheetService.asmx" />
@@ -231,26 +225,21 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="WebServices\FilesUploadService.asmx.cs">
-      <DependentUpon>FilesUploadService.asmx</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="WebServices\MemberService.asmx.cs">
       <DependentUpon>MemberService.asmx</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="WebServices\ProjectService.asmx.cs">
       <DependentUpon>ProjectService.asmx</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="WebServices\TimesheetService.asmx.cs">
       <DependentUpon>TimesheetService.asmx</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="FileStorage\BCFs\" />
-    <Folder Include="FileStorage\BEPs\" />
-    <Folder Include="FileStorage\Images\" />
-    <Folder Include="FileStorage\Reports\" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="Models\BIMdb.edmx">
