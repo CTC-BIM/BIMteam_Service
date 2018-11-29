@@ -5,6 +5,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Web.Services;
+using System.IO;
+using System.ComponentModel;
 
 namespace BIMService.WebServices.Timesheets
 {
@@ -300,7 +302,7 @@ namespace BIMService.WebServices.Timesheets
             bool checkUserHour = false;
             //Lấy UserName từ Database
             var user = db.C02_BIMstaff.FirstOrDefault(s => s.BIMstaffID == enity.MemberID);
-            username = user.Staff_name;
+            username = user.Sortname;
             //Lấy ra ProjectName
             var project = db.C01_DesignProject.FirstOrDefault(s => s.ProjectID == enity.ProjectID);
             ProjectName = project.ProjectName;
@@ -308,10 +310,10 @@ namespace BIMService.WebServices.Timesheets
             var work = db.C16_WorkType.FirstOrDefault(s => s.WorkID == enity.WorkID);
             workName = work.WorkName;
             workGroup = work.WorkGroup != null ? work.WorkGroup : 1;
-            checkUserHour = KiemtraSoGioTrongNgay(enity.RecordDate, enity.Hour, enity.OT);
+            checkUserHour = KiemtraSoGioTrongNgay(enity.MemberID,enity.RecordDate, enity.Hour, enity.OT);
             try
             {
-                string kq = "Add Work Done false";
+                string kq = "Tổng số giờ trong ngày vượt quá 8h hoặc giờ Overtime quá nhiều trong ngày";
                 if (checkUserHour)
                 {
                     C15_TimeSheet newRecord = new C15_TimeSheet();
@@ -327,13 +329,17 @@ namespace BIMService.WebServices.Timesheets
                     newRecord.Description = enity.Description;
                     db.C15_TimeSheet.Add(newRecord);
                     db.SaveChanges();
-                    kq = "Add Work Done SUCCESSFUL";
+                    kq = "Thêm công tác Thành công";
+                    return kq;
                 }
-                return kq;
+                else
+                {
+                    return kq;
+                }
             }
             catch (Exception ex)
             {
-                return "Add Work Done FALSE because " + ex.Message;
+                return "Thêm công tác Thất bại do " + ex.Message;
             }
 
         }
@@ -346,32 +352,30 @@ namespace BIMService.WebServices.Timesheets
         /// <param name="hour">Số giờ chính</param>
         /// <param name="oT">Số giờ tăng ca</param>
         /// <returns>True: có thể thêm Record, FALSE: do Hour > 8h hoặc OT > 15h</returns>
-        private bool KiemtraSoGioTrongNgay(DateTime recordDate, int hour, int oT)
+        private bool KiemtraSoGioTrongNgay(int memberID, DateTime recordDate, int hour, int oT)
         {
             bool kq = false;
             int TotalHour = 0;
             int TotalOT = 0;
-            List<C15_TimeSheet> recordperDate = db.C15_TimeSheet.Where(s => s.RecordDate == recordDate).ToList();
-            if (recordperDate == null) return kq = true;
-            foreach (var item in recordperDate)
+            //Lấy ra số Record trong ngày
+            List<C15_TimeSheet> recordInDate = db.C15_TimeSheet.Where(s => s.RecordDate == recordDate).ToList();
+            if (recordInDate == null || recordInDate.Count == 0) return kq = true;
+
+            //Lấy ra số Record của Member cần tìm
+            List<C15_TimeSheet> items = recordInDate.Where(s => s.MemberID == memberID).ToList();
+            if (items == null || items.Count == 0) return kq = true;
+
+            foreach (var item in items)
             {
                 TotalHour += item.Hour;
                 TotalOT += item.OvertimeHour;
             }
-            if (TotalHour < 8 && TotalOT < 15) return kq = true;
+            if (TotalHour < 9 && TotalOT < 15) return kq = true;
             else return kq;
         }
 
+
         #endregion
-
-
-
-
-
-
-
-
-
 
 
 
