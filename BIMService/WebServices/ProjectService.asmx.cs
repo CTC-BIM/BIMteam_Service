@@ -211,6 +211,83 @@ namespace BIMService.WebServices.Projects
             return lstproject;
         }
 
+        /// <summary>
+        /// Service lấy danh sách dự án theo MemberID nhập vào
+        /// </summary>
+        /// <param name="memberID">VD: 1</param>
+        /// <returns>Danh sách DuAnOutput</returns>
+        [WebMethod]
+        public List<DuAnOutput> TimDuAnTheoMemberID(int memberID)
+        {
+            if (memberID < 0) return null;
+            C02_BIMstaff user = db.C02_BIMstaff.FirstOrDefault(s => s.BIMstaffID == memberID);
+            if (user == null) return null;
+            List<C01_DesignProject> items = db.C01_DesignProject.Where(s => s.BIM_staff == user.Sortname).ToList();
+            if (items == null || items.Count == 0) return null;
+            List<DuAnOutput> lstproject = new List<DuAnOutput>();
+            foreach (C01_DesignProject item in items)
+            {
+                DuAnOutput da = new DuAnOutput();
+                da.MaDuAn = item.ProjectID;
+                da.TenDuAn = item.ProjectName;
+                da.BIMmember = item.BIM_staff;
+                da.BIMMEP = item.BIM_MEP_staff;
+                da.ProjectState = item.ProjectState;
+                da.ARCmodel = item.Modeling_ARC_main;
+                da.STRmodel = item.Modeling_STR;
+                da.MEPmodel = item.Modeling_MEP;
+                da.propjectStatus = item.ProjectStatus;
+                da.projectPhase = item.ProjectPhase;
+                da.projectScope = item.ProjectScope;
+                lstproject.Add(da);
+            };
+            items.Clear();
+            return lstproject;
+        }
+
+        /// <summary>
+        /// Service lấy danh sách dự án theo UserID và tình trạng dự án
+        /// </summary>
+        /// <param name="memberID">VD: 1</param>
+        /// <param name="projectState">Tình trạng dự án: Ongoing/Pause/Finish</param>
+        /// <returns></returns>
+        [WebMethod]
+        public List<DuAnOutput> TimDuAnTheoMemIDStatus(int memberID, string projectState)
+        {
+            if (memberID < 0) return null;
+            C02_BIMstaff user = db.C02_BIMstaff.FirstOrDefault(s => s.BIMstaffID == memberID);
+            if (user == null) return null;
+            List<C01_DesignProject> listProject = db.C01_DesignProject.Where(s => s.BIM_staff == user.Sortname).ToList();
+            if (listProject == null || listProject.Count == 0) return null;
+            List<C01_DesignProject> items = listProject.Where(s => s.ProjectState == projectState).ToList();
+            if (items == null || items.Count == 0) return null;
+            List<DuAnOutput> lstproject = new List<DuAnOutput>();
+            foreach (C01_DesignProject item in items)
+            {
+                DuAnOutput da = new DuAnOutput();
+                da.MaDuAn = item.ProjectID;
+                da.TenDuAn = item.ProjectName;
+                da.BIMmember = item.BIM_staff;
+                da.BIMMEP = item.BIM_MEP_staff;
+                da.ProjectState = item.ProjectState;
+                da.ARCmodel = item.Modeling_ARC_main;
+                da.STRmodel = item.Modeling_STR;
+                da.MEPmodel = item.Modeling_MEP;
+                da.propjectStatus = item.ProjectStatus;
+                da.projectPhase = item.ProjectPhase;
+                da.projectScope = item.ProjectScope;
+                lstproject.Add(da);
+            };
+            items.Clear();
+            return lstproject;
+        }
+
+
+
+
+
+
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

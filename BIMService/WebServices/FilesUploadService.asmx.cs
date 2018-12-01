@@ -33,9 +33,14 @@ namespace BIMService.WebServices
                 //Thay đổi tên FileUpload
                 //[Project]-[Type]-[fileName]-[Date]
                 MemoryStream ms = new MemoryStream(f);
-                
+
                 string FileNameUpload = ProjectID + "-" + dest + "-" + fileName;
                 string path = Server.MapPath("../FileStorage/" + dest + "/" + FileNameUpload);//Cần chỉnh sửa filename trước khi Write
+                //Thêm Sercurity
+                Path.Combine(path);
+                System.Security.AccessControl.FileSecurity fileSecurity = new System.Security.AccessControl.FileSecurity();
+                File.SetAccessControl(path, fileSecurity);
+
                 FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write);
                 WriteFileToStorage(ms, fs);
                 //ms.WriteTo(fs);
