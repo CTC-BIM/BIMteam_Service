@@ -24,6 +24,8 @@ namespace BIMService.WebServices.Members
         public string Department { get; set; }
         [DataMember]
         public string UserStatus { get; set; }
+        [DataMember]
+        public string Image { get; set; }
     }
     #endregion
 
@@ -60,6 +62,7 @@ namespace BIMService.WebServices.Members
                     Password = s.Password,
                     Department = s.Deparment,
                     UserType = s.UserType,
+                    Image = s.Image,
                     UserStatus = s.UserStatus
                 })
                 .ToList();
@@ -85,6 +88,7 @@ namespace BIMService.WebServices.Members
                 Password = item.Password,
                 Department = item.Deparment,
                 UserType = item.UserType,
+                Image = item.Image,
                 UserStatus = item.UserStatus
             };
             return member;
@@ -109,6 +113,7 @@ namespace BIMService.WebServices.Members
                 Password = item.Password,
                 Department = item.Deparment,
                 UserType = item.UserType,
+                Image = item.Image,
                 UserStatus = item.UserStatus
             };
             return member;
@@ -133,6 +138,7 @@ namespace BIMService.WebServices.Members
                 Password = item.Password,
                 Department = item.Deparment,
                 UserType = item.UserType,
+                Image = item.Image,
                 UserStatus = item.UserStatus
             };
             return member;
@@ -160,6 +166,7 @@ namespace BIMService.WebServices.Members
                 it.Department = item.Deparment;
                 it.UserType = item.UserType;
                 it.UserStatus = item.UserStatus;
+                it.Image = item.Image;
                 lstMember.Add(it);
             }
             items.Clear();
