@@ -109,6 +109,7 @@
     </Content>
     <Content Include="Web.config" />
     <Content Include="WebServices\FilesUploadService.asmx" />
+    <Content Include="WebServices\LoginService.asmx" />
     <Content Include="WebServices\MemberService.asmx" />
     <Content Include="WebServices\ProjectService.asmx" />
     <Content Include="WebServices\TimesheetService.asmx" />
@@ -233,6 +234,10 @@
     </Compile>
     <Compile Include="WebServices\FilesUploadService.asmx.cs">
       <DependentUpon>FilesUploadService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WebServices\LoginService.asmx.cs">
+      <DependentUpon>LoginService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="WebServices\MemberService.asmx.cs">
