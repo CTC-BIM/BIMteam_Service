@@ -119,6 +119,7 @@ namespace BIMService.WebServices.Members
             return member;
         }
 
+
         /// <summary>
         /// Service tìm kiếm nhân viên theo Username
         /// </summary>
@@ -171,6 +172,33 @@ namespace BIMService.WebServices.Members
             }
             items.Clear();
             return lstMember;
+        }
+
+
+        [WebMethod]
+        public MemberOutput Login(string userName, string password)
+        {
+            try
+            {
+                if (userName == null || userName.Trim() == "" || password == null) return null;
+                var userLogin = db.C02_BIMstaff.Where(s => s.Username == userName && s.Password == password).Select(c => new MemberOutput
+                {
+                    ID = c.BIMstaffID,
+                    UserName = c.Username,
+                    SoftName = c.Sortname,
+                    Password = c.Password,
+                    UserType = c.UserType,
+                    Department = c.Deparment,
+                    UserStatus = c.UserStatus,
+                    Image = c.Image
+                });
+                if (userLogin == null) return null;
+                return userLogin;
+            }
+            catch (System.Exception)
+            {
+                return null;
+            }
         }
 
         protected override void Dispose(bool disposing)

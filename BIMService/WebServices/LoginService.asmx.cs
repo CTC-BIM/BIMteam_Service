@@ -19,8 +19,9 @@ namespace BIMService.WebServices
         {
             try
             {
-                if (userName == null || userName.Trim() == "" || password == null || password.Trim() == "") return null;
+                if (userName == null || userName.Trim() == "" || password == null) return null;
                 //Viết thêm hàm login
+
                 return null;
             }
             catch (System.Exception ex)
