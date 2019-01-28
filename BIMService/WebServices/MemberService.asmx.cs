@@ -181,19 +181,18 @@ namespace BIMService.WebServices.Members
             try
             {
                 if (userName == null || userName.Trim() == "" || password == null) return null;
-                var userLogin = db.C02_BIMstaff.Where(s => s.Username == userName && s.Password == password).Select(c => new MemberOutput
-                {
-                    ID = c.BIMstaffID,
-                    UserName = c.Username,
-                    SoftName = c.Sortname,
-                    Password = c.Password,
-                    UserType = c.UserType,
-                    Department = c.Deparment,
-                    UserStatus = c.UserStatus,
-                    Image = c.Image
-                });
+                var userLogin = db.C02_BIMstaff.FirstOrDefault(s => s.Username == userName && s.Password == password);
                 if (userLogin == null) return null;
-                return userLogin;
+                MemberOutput userReturn = new MemberOutput();
+                userReturn.ID = userLogin.BIMstaffID;
+                userReturn.UserName = userLogin.Username;
+                userReturn.SoftName = userLogin.Sortname;
+                userReturn.Password = userLogin.Password;
+                userReturn.UserType = userLogin.UserType;
+                userReturn.Department = userLogin.Deparment;
+                userReturn.UserStatus = userLogin.UserStatus;
+                userReturn.Image = userLogin.Image;
+                return userReturn;
             }
             catch (System.Exception)
             {
